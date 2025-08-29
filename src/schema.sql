@@ -31,6 +31,7 @@ INSERT INTO balance_types (id, slug, label, status, created_at, updated_at) VALU
 
 create table balance_accounts (
     id int(11) NOT NULL AUTO_INCREMENT,
+    label varchar(150) NOT NULL,
     type_id int(11) NOT NULL,
     user_id int(11) NOT NULL,
     amount decimal(10,2) NOT NULL,
