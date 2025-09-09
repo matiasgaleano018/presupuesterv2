@@ -1,7 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { User } from '../../users/entities/user.entity';
+import { OperationTypes } from '../../operations/entities/operation-type.entity';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToOne, JoinColumn, Index } from 'typeorm';
 
 const statusIdActive = 100;
 @Entity('categories')
+@Index(['slug', 'type_id', 'user_id'], { unique: true })
 export class Category {
 
     @PrimaryGeneratedColumn()
@@ -27,4 +30,12 @@ export class Category {
 
     @UpdateDateColumn({ type: 'timestamp' })
     updated_at: Date;
+
+    @ManyToOne(() => OperationTypes, (type) => type.categories)
+    @JoinColumn({ name: 'type_id' })
+    type: OperationTypes
+
+    @ManyToOne(() => User, (user) => user.categories)
+    @JoinColumn({ name: 'user_id' })
+    user: User
 }

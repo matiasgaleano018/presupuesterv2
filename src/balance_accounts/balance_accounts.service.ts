@@ -1,6 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { CreateBalanceAccountDto } from './dto/create-balance_account.dto';
-import { UpdateBalanceAccountDto } from './dto/update-balance_account.dto';
+import { Injectable } from '@nestjs/common';
 import { BalanceAccount } from './entities/balance_account.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -20,7 +18,8 @@ export class BalanceAccountsService {
     return await this.balanceAccountsRepository.find({
       where: {
         user_id: userId
-      }
+      },
+      relations: ['type']
     });
   }
 

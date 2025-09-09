@@ -8,9 +8,11 @@ CREATE TABLE users (
     created_at datetime NOT NULL,
     updated_at datetime NOT NULL,
     PRIMARY KEY (id)
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-create table balance_types (
+--insert into users (first_name, last_name, email, password, status, created_at, updated_at) values ('admin', 'test', 'admin@test.com', '123456', 100, utc_timestamp(), utc_timestamp());
+
+CREATE TABLE balance_account_types (
     id int(11) NOT NULL,
     slug varchar(50) NOT NULL,
     label varchar(150) NOT NULL,
@@ -18,9 +20,9 @@ create table balance_types (
     created_at datetime NOT NULL,
     updated_at datetime NOT NULL,
     PRIMARY KEY (id)
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO balance_types (id, slug, label, status, created_at, updated_at) VALUES 
+INSERT INTO balance_account_types (id, slug, label, status, created_at, updated_at) VALUES 
 (10, 'cash', 'Efectivo', 100, utc_timestamp(), utc_timestamp()),
 (20, 'savings_account', 'Caja de ahorro', 100, utc_timestamp(), utc_timestamp()),
 (30, 'checking_account', 'Cuenta corriente', 100, utc_timestamp(), utc_timestamp()),
@@ -40,9 +42,10 @@ create table balance_accounts (
     created_at datetime NOT NULL,
     updated_at datetime NOT NULL,
     PRIMARY KEY (id),
+    UNIQUE (user_id, type_id, number),
     FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (type_id) REFERENCES balance_types(id)
-);
+    FOREIGN KEY (type_id) REFERENCES balance_account_types(id)
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE operations_types (
     id int(11) NOT NULL,
@@ -52,7 +55,7 @@ CREATE TABLE operations_types (
     created_at datetime NOT NULL,
     updated_at datetime NOT NULL,
     PRIMARY KEY (id)
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO operations_types (id, slug, label, status, created_at, updated_at) VALUES 
 (10, 'income', 'Ingreso', 100, utc_timestamp(), utc_timestamp()),
@@ -73,7 +76,8 @@ create table categories (
     UNIQUE (user_id, slug),
     FOREIGN KEY (type_id) REFERENCES operations_types(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 
 CREATE TABLE balance_operations (
     id int(11) NOT NULL AUTO_INCREMENT,
@@ -88,7 +92,7 @@ CREATE TABLE balance_operations (
     FOREIGN KEY (category_id) REFERENCES categories(id),
     FOREIGN KEY (type_id) REFERENCES operations_types(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE balance_details (
     id int(11) NOT NULL AUTO_INCREMENT,
@@ -98,6 +102,7 @@ CREATE TABLE balance_details (
     created_at datetime NOT NULL,
     updated_at datetime NOT NULL,
     PRIMARY KEY (id),
+    UNIQUE (operation_id, account_id),
     FOREIGN KEY (account_id) REFERENCES balance_accounts(id),
     FOREIGN KEY (operation_id) REFERENCES balance_operations(id)
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

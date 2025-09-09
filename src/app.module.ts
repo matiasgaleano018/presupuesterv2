@@ -7,6 +7,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoriesModule } from './categories/categories.module';
 import { BalanceAccountsModule } from './balance_accounts/balance_accounts.module';
+import { OperationsModule } from './operations/operations.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -26,7 +28,9 @@ import { BalanceAccountsModule } from './balance_accounts/balance_accounts.modul
       inject: [ConfigService],
     }),
     CategoriesModule,
-    BalanceAccountsModule
+    BalanceAccountsModule,
+    OperationsModule,
+    UsersModule
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService],
