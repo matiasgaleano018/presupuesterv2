@@ -17,7 +17,9 @@ export class OperationsService {
         @InjectRepository(BalanceDetails)
         private balanceDetailsRepository: Repository<BalanceDetails>,
 
-        private readonly balanceAccountsService: BalanceAccountsService, // 👈 ya disponible
+        private readonly balanceAccountsService: BalanceAccountsService,
+
+        private readonly incomeOperationService: IncomeOperationService
 
     ) {}
 
@@ -33,38 +35,39 @@ export class OperationsService {
         return this.balanceOperationsRepository.update(id, { status: 0 });
     }
 
-    async createMovement(operation: CreateOperationDto) {
-        var balanceOperation: BalanceOperationType;
-        var balanceDetail: Array<BalanceDetailType>;
-        var opType = operation.type_slug;
+    async createMovement(operation: CreateOperationDto): Promise<BalanceOperations> {
+        return this.balanceOperationsRepository.manager.transaction(
+            async (manager) => {
+                let balanceOperation: BalanceOperationType;
+                let balanceDetails: BalanceDetailType[];
 
-        switch(opType) {
-            case IncomeOperationService.slug:
-                const op = new IncomeOperationService();
-                const opReadyToCreate = op.prepareOperation(operation);
-                balanceOperation = opReadyToCreate.balanceOperation;
-                balanceDetail = opReadyToCreate.balanceDetail;
-                break;
-            default:
-                throw new Error('Operation type not found');                
-        }
+                switch (operation.type_slug) {
+                    case IncomeOperationService.slug:
+                    const opReadyToCreate = this.incomeOperationService.prepareOperation(operation);
+                    balanceOperation = opReadyToCreate.balanceOperation;
+                    balanceDetails = opReadyToCreate.balanceDetail;
+                    break;
+                    default:
+                    throw new Error(`Operation type "${operation.type_slug}" not found`);
+                }
 
-        const createOp = await this.createOperation(balanceOperation);
-        const operationId = createOp.id;
-        if(!operationId) throw new Error('Operation not created');
+                const createdOp = await manager.save(BalanceOperations, balanceOperation);
 
-        for (const detail of balanceDetail){
-            var addDetail = detail;
-            addDetail['operation_id'] = operationId;
-            try {
-                await this.createDetails(addDetail);
-                await this.balanceAccountsService.afectAccountAmount(detail.account_id, detail.amount);
-            } catch (error) {
-                await this.markAsFailed(operationId);
-                throw error;
-            }
-        }
+                if (!createdOp?.id) {
+                    throw new Error('Operation not created');
+                }
 
-        return createOp;
+                for (const detail of balanceDetails) {
+                    const detailToSave = { ...detail, operation_id: createdOp.id };
+                    await manager.save(BalanceDetails, detailToSave);
+                    await this.balanceAccountsService.afectAccountAmount(
+                    detail.account_id,
+                    detail.amount,
+                    );
+                }
+
+                return createdOp;
+            },
+        );
     }
 }

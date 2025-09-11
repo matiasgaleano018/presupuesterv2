@@ -5,13 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { BalanceOperations } from './entities/balance-operation.entity';
 import { BalanceDetails } from './entities/balance-detail.entity';
 import { BalanceAccountsModule } from '../balance_accounts/balance_accounts.module';
+import { IncomeOperationService } from './operations-types/income-operation.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([BalanceOperations, BalanceDetails]),
     BalanceAccountsModule
   ],
-  providers: [OperationsService],
+  providers: [OperationsService, IncomeOperationService],
   controllers: [OperationsController]
 })
 export class OperationsModule {}
