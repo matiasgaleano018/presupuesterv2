@@ -1,13 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { BalanceAccount } from './entities/balance_account.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, EntityManager } from 'typeorm';
 
 @Injectable()
 export class BalanceAccountsService {
   constructor(
     @InjectRepository(BalanceAccount)
-    private balanceAccountsRepository: Repository<BalanceAccount>
+    private balanceAccountsRepository: Repository<BalanceAccount>,
   ) {}
 
   create(balanceAccount: Partial<BalanceAccount>): Promise<BalanceAccount> {
@@ -16,19 +16,14 @@ export class BalanceAccountsService {
 
   async getAll(userId: number) {
     return await this.balanceAccountsRepository.find({
-      where: {
-        user_id: userId
-      },
-      relations: ['type']
+      where: { user_id: userId },
+      relations: ['type'],
     });
   }
 
   async getByTypeId(userId: number, typeId: number) {
     return await this.balanceAccountsRepository.find({
-      where: {
-        user_id: userId,
-        type_id: typeId
-      }
+      where: { user_id: userId, type_id: typeId },
     });
   }
 
@@ -36,18 +31,30 @@ export class BalanceAccountsService {
     return this.balanceAccountsRepository.update(id, balanceAccount);
   }
 
-  async afectAccountAmount(id: number, amount: number) {
-    const account = await this.balanceAccountsRepository.findOneBy({ id: id });
-    if(!account) {
-      return new Error('Cuenta no encontrada');
-    }
-    const currentAmount = account.amount;
-    const newAmount = currentAmount + amount;
-    if(newAmount < 0) {
-      return new Error('Monto insuficiente en la cuenta');
-    }
-    account.amount = newAmount;
-    return this.balanceAccountsRepository.save(account);
-  }
+  async afectAccountAmount(
+    id: number,
+    amount: number,
+    manager?: EntityManager,
+  ): Promise<BalanceAccount> {
+    const repo = manager
+      ? manager.getRepository(BalanceAccount)
+      : this.balanceAccountsRepository;
 
+    const account = await repo.findOne({ where: { id } });
+    if (!account) {
+      throw new NotFoundException('Cuenta no encontrada');
+    }
+
+    if (account.user_id !== 1 || account.status !== 100) {
+      throw new NotFoundException('Cuenta no encontrada o no disponible');
+    }
+
+    const newAmount = account.amount + amount;
+    if (newAmount < 0) {
+      throw new BadRequestException('Monto insuficiente en la cuenta');
+    }
+
+    account.amount = newAmount;
+    return repo.save(account);
+  }
 }
