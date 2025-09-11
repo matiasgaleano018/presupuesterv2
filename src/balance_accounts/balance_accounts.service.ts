@@ -36,4 +36,18 @@ export class BalanceAccountsService {
     return this.balanceAccountsRepository.update(id, balanceAccount);
   }
 
+  async afectAccountAmount(id: number, amount: number) {
+    const account = await this.balanceAccountsRepository.findOneBy({ id: id });
+    if(!account) {
+      return new Error('Cuenta no encontrada');
+    }
+    const currentAmount = account.amount;
+    const newAmount = currentAmount + amount;
+    if(newAmount < 0) {
+      return new Error('Monto insuficiente en la cuenta');
+    }
+    account.amount = newAmount;
+    return this.balanceAccountsRepository.save(account);
+  }
+
 }

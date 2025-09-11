@@ -8,5 +8,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [TypeOrmModule.forFeature([BalanceAccount])],
   controllers: [BalanceAccountsController],
   providers: [BalanceAccountsService],
+  exports: [BalanceAccountsService],
 })
 export class BalanceAccountsModule {}
