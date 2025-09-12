@@ -8,6 +8,8 @@ import { IncomeOperationService } from './operations-types/income-operation.serv
 import { BalanceDetailType, BalanceOperationType } from './types/operation.types';
 import { BalanceAccountsService } from '../balance_accounts/balance_accounts.service';
 import { ExpenseOperationService } from './operations-types/expense-operation.service';
+import { TransferOperationService } from './operations-types/transfer-operation.service';
+import { AjustOperationService } from './operations-types/ajust-operation.service';
 
 @Injectable()
 export class OperationsService {
@@ -15,14 +17,15 @@ export class OperationsService {
         @InjectRepository(BalanceOperations)
         private balanceOperationsRepository: Repository<BalanceOperations>,
 
-        @InjectRepository(BalanceDetails)
-        private balanceDetailsRepository: Repository<BalanceDetails>,
-
         private readonly balanceAccountsService: BalanceAccountsService,
 
         private readonly incomeOperationService: IncomeOperationService,
 
-        private readonly expenseOperationService: ExpenseOperationService
+        private readonly expenseOperationService: ExpenseOperationService,
+
+        private readonly transferOperationService: TransferOperationService,
+
+        private readonly ajustOperationService: AjustOperationService
 
     ) {}
 
@@ -42,6 +45,16 @@ export class OperationsService {
                         const opExpReadyToCreate = this.expenseOperationService.prepareOperation(operation);
                         balanceOperation = opExpReadyToCreate.balanceOperation;
                         balanceDetails = opExpReadyToCreate.balanceDetail;
+                        break;
+                    case TransferOperationService.slug:
+                        const opTransReadyToCreate = this.transferOperationService.prepareOperation(operation);
+                        balanceOperation = opTransReadyToCreate.balanceOperation;
+                        balanceDetails = opTransReadyToCreate.balanceDetail;
+                        break;
+                    case AjustOperationService.slug:
+                        const opAjustReadyToCreate = this.ajustOperationService.prepareOperation(operation);
+                        balanceOperation = opAjustReadyToCreate.balanceOperation;
+                        balanceDetails = opAjustReadyToCreate.balanceDetail;
                         break;
                     default:
                         throw new BadRequestException(`Operation type "${operation.type_slug}" not found`);
