@@ -9,11 +9,13 @@ import { IncomeOperationService } from './operations-types/income-operation.serv
 import { ExpenseOperationService } from './operations-types/expense-operation.service';
 import { TransferOperationService } from './operations-types/transfer-operation.service';
 import { AjustOperationService } from './operations-types/ajust-operation.service';
+import { CategoriesModule } from '../categories/categories.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([BalanceOperations, BalanceDetails]),
-    BalanceAccountsModule
+    BalanceAccountsModule,
+    CategoriesModule
   ],
   providers: [OperationsService, IncomeOperationService, ExpenseOperationService, TransferOperationService, AjustOperationService],
   controllers: [OperationsController]

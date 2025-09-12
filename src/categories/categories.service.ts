@@ -75,4 +75,23 @@ export class CategoriesService {
         }
         return await this.categoriesRepository.update(id, categoryFields);
     }
+
+    async isValidOrFail(id: number, type: string){
+        if(!this.opTypes[type]) {
+            throw new NotFoundException(`Tipo de operación ${type} no encontrado`);
+        }
+        const category = await this.categoriesRepository.findOne({
+            where: {
+                id: id,
+                user_id: 1
+            }
+        })
+
+        const typeId = this.opTypes[type]
+        if( !category || !category.type_id || typeId !== category.type_id){
+            throw new NotFoundException('Categoria no encontrada o no valida')
+        }
+
+        return category;
+    }
 }

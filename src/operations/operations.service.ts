@@ -10,6 +10,7 @@ import { BalanceAccountsService } from '../balance_accounts/balance_accounts.ser
 import { ExpenseOperationService } from './operations-types/expense-operation.service';
 import { TransferOperationService } from './operations-types/transfer-operation.service';
 import { AjustOperationService } from './operations-types/ajust-operation.service';
+import { CategoriesService } from '../categories/categories.service';
 
 @Injectable()
 export class OperationsService {
@@ -18,6 +19,8 @@ export class OperationsService {
         private balanceOperationsRepository: Repository<BalanceOperations>,
 
         private readonly balanceAccountsService: BalanceAccountsService,
+
+        private readonly categoriesService: CategoriesService,
 
         private readonly incomeOperationService: IncomeOperationService,
 
@@ -32,6 +35,12 @@ export class OperationsService {
     async createMovement(operation: CreateOperationDto): Promise<BalanceOperations> {
         return this.balanceOperationsRepository.manager.transaction(
             async (manager) => {
+                try {
+                    await this.categoriesService.isValidOrFail(operation.category_id, operation.type_slug);
+                } catch (error) {
+                    throw new BadRequestException(error.message);
+                }
+
                 let balanceOperation: BalanceOperationType;
                 let balanceDetails: BalanceDetailType[];
 
