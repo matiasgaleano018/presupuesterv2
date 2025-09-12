@@ -35,7 +35,7 @@ export class BalanceAccountsService {
     id: number,
     amount: number,
     manager?: EntityManager,
-  ): Promise<BalanceAccount> {
+  ) {
     const repo = manager
       ? manager.getRepository(BalanceAccount)
       : this.balanceAccountsRepository;
@@ -44,6 +44,7 @@ export class BalanceAccountsService {
     if (!account) {
       throw new NotFoundException('Cuenta no encontrada');
     }
+    const prevAmount = account.amount;
 
     if (account.user_id !== 1 || account.status !== 100) {
       throw new NotFoundException('Cuenta no encontrada o no disponible');
@@ -55,6 +56,7 @@ export class BalanceAccountsService {
     }
 
     account.amount = newAmount;
-    return repo.save(account);
+    const accountAfected = await repo.save(account);
+    return {...accountAfected, prev_amount: prevAmount};
   }
 }

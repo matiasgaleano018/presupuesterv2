@@ -16,6 +16,12 @@ export class BalanceDetails {
   @Column({nullable: false})
   amount: number;
 
+  @Column()
+  prev_acc_amount: number;
+
+  @Column()
+  next_acc_amount: number;
+
   @Column({ default: statusIdActive })
   status: number;
 

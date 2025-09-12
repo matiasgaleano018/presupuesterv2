@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BalanceOperations } from './entities/balance-operation.entity';
@@ -63,17 +63,22 @@ export class OperationsService {
                 const createdOp = await manager.save(BalanceOperations, balanceOperation);
 
                 if (!createdOp?.id) {
-                    throw new Error('Operation not created');
+                    throw new InternalServerErrorException('Operation not created');
                 }
 
                 for (const detail of balanceDetails) {
-                    const detailToSave = { ...detail, operation_id: createdOp.id };
-                    await manager.save(BalanceDetails, detailToSave);
-                    await this.balanceAccountsService.afectAccountAmount(
+                    const accountAfected = await this.balanceAccountsService.afectAccountAmount(
                         detail.account_id,
                         detail.amount,
                         manager,
                     );
+                    const detailToSave = {
+                         ...detail, 
+                         operation_id: createdOp.id,
+                         prev_acc_amount: accountAfected.prev_amount,
+                         next_acc_amount: accountAfected.amount
+                        };
+                    await manager.save(BalanceDetails, detailToSave);
                 }
 
                 return createdOp;

@@ -1,6 +1,6 @@
 import { IsString, IsNumber, MinLength, Min, IsOptional } from 'class-validator';
 
-export class CreateCategoryDto {
+export class UpdateCategoryDto {
     @IsString()
     @MinLength(3)
     label: string;
@@ -9,14 +9,6 @@ export class CreateCategoryDto {
     @MinLength(3)
     slug: string;
 
-    @IsString()
-    type_slug: string;
-
-    @IsNumber()
-    @Min(1)
-    user_id: number;
-
-    @IsOptional()
     @IsNumber()
     isActive?: number;
 }
