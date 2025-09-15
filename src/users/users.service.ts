@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
+import { UserReturn } from './types/user.type';
 
 @Injectable()
 export class UsersService {
@@ -17,8 +18,21 @@ export class UsersService {
     private configService: ConfigService,
   ) {}
 
-  async getUserInfoById(id: number) {
-    return await this.usersRepository.findOne({ where: { id } });
+  async getUserInfoById(id: number): Promise<UserReturn> {
+    const user = await this.usersRepository.findOne({ where: { id } });
+    if(!user) {
+      throw new BadRequestException('Usuario no encontrado');
+    }
+    return {
+      id: user.id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email
+    }
+  }
+
+  private getAllUserInfoById(id: number) {
+    return this.usersRepository.findOne({ where: { id } });
   }
 
   private async emailExists(email: string) {
@@ -77,7 +91,7 @@ export class UsersService {
   }
 
   private async _changePassword(id: number, oldPassword: string, newPassword: string) {
-    const userInfo = await this.getUserInfoById(id);
+    const userInfo = await this.getAllUserInfoById(id);
     if(!userInfo) {
       throw new BadRequestException('Usuario no encontrado');
     }

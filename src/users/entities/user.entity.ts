@@ -1,7 +1,8 @@
 import { Category } from '../../categories/entities/category.entity';
 import { BalanceAccount } from '../../balance_accounts/entities/balance_account.entity';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { BalanceOperations } from '../../operations/entities/balance-operation.entity';
+import { Auth } from 'src/auth/entities/auth.entity';
 
 const statusIdActive = 100;
 @Entity('users')
@@ -38,4 +39,7 @@ export class User {
 
     @OneToMany(() => BalanceOperations, (operation) => operation.user)
     operations: BalanceOperations[]
+
+    @OneToMany(() => Auth, (auth) => auth.user)
+    auths: Auth[]
 }
