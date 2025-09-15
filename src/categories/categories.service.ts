@@ -94,4 +94,29 @@ export class CategoriesService {
 
         return category;
     }
+
+    async insertDefaultValues(user_id: number) {
+        const defaultCategories = [
+            //ingresos
+            {slug: 'salario', label: 'Salario', type_id: this.opTypes.income, user_id: user_id},
+            {slug: 'inversion', label: 'Inversión', type_id: this.opTypes.income, user_id: user_id},
+            //egresos
+            {slug: 'comida', label: 'Comida', type_id: this.opTypes.expense, user_id: user_id},
+            {slug: 'transporte', label: 'Transporte', type_id: this.opTypes.expense, user_id: user_id},
+            {slug: 'compras', label: 'Compras', type_id: this.opTypes.expense, user_id: user_id},
+            {slug: 'salud', label: 'Salud', type_id: this.opTypes.expense, user_id: user_id},
+            {slug: 'educacion', label: 'Educación', type_id: this.opTypes.expense, user_id: user_id},
+            {slug: 'ocio', label: 'Ocio', type_id: this.opTypes.expense, user_id: user_id},
+            {slug: 'deuda', label: 'Pago de deudas', type_id: this.opTypes.expense, user_id: user_id},
+            {slug: 'ropa', label: 'Ropa', type_id: this.opTypes.expense, user_id: user_id},
+            //transferencias
+            {slug: 'extraccion-cajero', label: 'Extracción en cajero automatico', type_id: this.opTypes.expense, user_id: user_id},
+            {slug: 'transferencia', label: 'Transferencia entre cuentas', type_id: this.opTypes.expense, user_id: user_id},
+            //Ajustes
+            {slug: 'ajuste', label: 'Ajuste', type_id: this.opTypes.ajust, user_id: user_id},
+        ];
+
+
+        return await this.categoriesRepository.save(defaultCategories);
+    }
 }

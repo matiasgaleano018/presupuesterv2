@@ -7,6 +7,8 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { UserReturn } from './types/user.type';
+import { CategoriesService } from 'src/categories/categories.service';
+import { BalanceAccountsService } from 'src/balance_accounts/balance_accounts.service';
 
 @Injectable()
 export class UsersService {
@@ -14,6 +16,10 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+
+    private readonly categoriesService: CategoriesService,
+
+    private readonly balanceAccountsService: BalanceAccountsService,
 
     private configService: ConfigService,
   ) {}
@@ -67,7 +73,13 @@ export class UsersService {
       password: hashedPassword
     };
 
-    return this.usersRepository.save(userToSave);
+    const userSaved = await this.usersRepository.save(userToSave);
+
+    await this.categoriesService.insertDefaultValues(userSaved.id);
+
+    await this.balanceAccountsService.insertDefaultAccount(userSaved.id);
+
+    return userSaved;
   }
 
   async validateUser(email: string, password: string) {

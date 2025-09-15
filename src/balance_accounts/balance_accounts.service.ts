@@ -59,4 +59,17 @@ export class BalanceAccountsService {
     const accountAfected = await repo.save(account);
     return {...accountAfected, prev_amount: prevAmount};
   }
+
+  async insertDefaultAccount(userId: number){
+    const account = {
+      label: 'Efectivo',
+      number: '0000',
+      type_id: 10,
+      user_id: userId,
+      amount: 0
+    };
+
+    return this.balanceAccountsRepository.save(account);
+  }
+
 }
