@@ -32,7 +32,7 @@ export class OperationsService {
 
     ) {}
 
-    async createMovement(operation: CreateOperationDto): Promise<BalanceOperations> {
+    async createMovement(userId: number, operation: CreateOperationDto): Promise<BalanceOperations> {
         return this.balanceOperationsRepository.manager.transaction(
             async (manager) => {
                 try {
@@ -46,22 +46,22 @@ export class OperationsService {
 
                 switch (operation.type_slug) {
                     case IncomeOperationService.slug:
-                        const opInReadyToCreate = this.incomeOperationService.prepareOperation(operation);
+                        const opInReadyToCreate = this.incomeOperationService.prepareOperation(userId, operation);
                         balanceOperation = opInReadyToCreate.balanceOperation;
                         balanceDetails = opInReadyToCreate.balanceDetail;
                         break;
                     case ExpenseOperationService.slug:
-                        const opExpReadyToCreate = this.expenseOperationService.prepareOperation(operation);
+                        const opExpReadyToCreate = this.expenseOperationService.prepareOperation(userId, operation);
                         balanceOperation = opExpReadyToCreate.balanceOperation;
                         balanceDetails = opExpReadyToCreate.balanceDetail;
                         break;
                     case TransferOperationService.slug:
-                        const opTransReadyToCreate = this.transferOperationService.prepareOperation(operation);
+                        const opTransReadyToCreate = this.transferOperationService.prepareOperation(userId, operation);
                         balanceOperation = opTransReadyToCreate.balanceOperation;
                         balanceDetails = opTransReadyToCreate.balanceDetail;
                         break;
                     case AjustOperationService.slug:
-                        const opAjustReadyToCreate = this.ajustOperationService.prepareOperation(operation);
+                        const opAjustReadyToCreate = this.ajustOperationService.prepareOperation(userId,operation);
                         balanceOperation = opAjustReadyToCreate.balanceOperation;
                         balanceDetails = opAjustReadyToCreate.balanceDetail;
                         break;

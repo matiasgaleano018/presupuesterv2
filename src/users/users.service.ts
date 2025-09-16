@@ -59,7 +59,7 @@ export class UsersService {
     return bcrypt.compare(password + secretWord, hashedPassword);
   }
 
-  async createUser (user: CreateUserDto) {
+  async createUser (user: CreateUserDto): Promise<UserReturn> {
     if (await this.emailExists(user.email)) {
       throw new BadRequestException('Email ya registrado');
     }
@@ -79,7 +79,12 @@ export class UsersService {
 
     await this.balanceAccountsService.insertDefaultAccount(userSaved.id);
 
-    return userSaved;
+    return {
+      id: userSaved.id,
+      first_name: userSaved.first_name,
+      last_name: userSaved.last_name,
+      email: userSaved.email
+    };
   }
 
   async validateUser(email: string, password: string) {

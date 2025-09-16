@@ -6,10 +6,6 @@ export class CreateOperationDto {
 
     @IsNumber()
     @Min(1)
-    user_id: number;
-
-    @IsNumber()
-    @Min(1)
     category_id: number;
 
     @IsNumber()
