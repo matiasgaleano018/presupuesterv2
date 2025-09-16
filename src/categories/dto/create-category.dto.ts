@@ -12,10 +12,6 @@ export class CreateCategoryDto {
     @IsString()
     type_slug: string;
 
-    @IsNumber()
-    @Min(1)
-    user_id: number;
-
     @IsOptional()
     @IsNumber()
     isActive?: number;

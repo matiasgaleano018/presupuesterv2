@@ -36,7 +36,7 @@ export class OperationsService {
         return this.balanceOperationsRepository.manager.transaction(
             async (manager) => {
                 try {
-                    await this.categoriesService.isValidOrFail(operation.category_id, operation.type_slug);
+                    await this.categoriesService.isValidOrFail(operation.category_id, operation.type_slug, userId);
                 } catch (error) {
                     throw new BadRequestException(error.message);
                 }
@@ -79,6 +79,7 @@ export class OperationsService {
                     const accountAfected = await this.balanceAccountsService.afectAccountAmount(
                         detail.account_id,
                         detail.amount,
+                        userId,
                         manager,
                     );
                     const detailToSave = {

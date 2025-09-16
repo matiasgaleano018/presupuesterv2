@@ -2,6 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Put } 
 import { BalanceAccountsService } from './balance_accounts.service';
 import { CreateBalanceAccountDto } from './dto/create-balance_account.dto';
 import { UpdateBalanceAccountDto } from './dto/update-balance_account.dto';
+import { GetUser } from 'src/decorators/get-user.decorator';
+import { Auth } from 'src/auth/entities/auth.entity';
 
 @Controller('balance-accounts')
 export class BalanceAccountsController {
@@ -18,8 +20,9 @@ export class BalanceAccountsController {
   }
 
   @Post()
-  create(@Body() createBalanceAccountDto: CreateBalanceAccountDto) {
-    return this.balanceAccountsService.create(createBalanceAccountDto);
+  create(@GetUser() req: Auth, @Body() createBalanceAccountDto: CreateBalanceAccountDto) {
+    const userId = req.user.id;
+    return this.balanceAccountsService.create(userId, createBalanceAccountDto);
   }
 
   @Put(':id')

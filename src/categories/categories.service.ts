@@ -20,41 +20,41 @@ export class CategoriesService {
         'ajust': 40
     }
 
-    async getCategoriesByTypeId(typeId: number) {
+    async getCategoriesByTypeId(userId: number, typeId: number) {
         return await this.categoriesRepository.find({
             where: {
                 type_id: typeId,
-                user_id: 1
+                user_id: userId
             }
         });
     }
 
-    async getCategoriesByType(type: string) {
+    async getCategoriesByType(userId: number, type: string) {
         return await this.categoriesRepository.find({
             where: {
                 type_id: this.opTypes[type],
-                user_id: 1
+                user_id: userId
             }
         });
     }
 
-    async getCategoryById(id: number) {
+    async getCategoryById(userId: number, id: number) {
         return await this.categoriesRepository.findOne({
             where: {
                 id: id,
-                user_id: 1
+                user_id: userId
             }
         });
     }
 
-    createCategory(category: CreateCategoryDto): Promise<Category> {
+    createCategory(userId: number, category: CreateCategoryDto): Promise<Category> {
         if(!this.opTypes[category.type_slug]) {
             throw new NotFoundException(`Tipo de operación ${category.type_slug} no encontrado`);
         }
         const categoryFields = {
             label: category.label,
             slug: category.slug.toLowerCase(),
-            user_id: category.user_id,
+            user_id: userId,
             type_id: this.opTypes[category.type_slug]
         };
 
@@ -76,14 +76,14 @@ export class CategoriesService {
         return await this.categoriesRepository.update(id, categoryFields);
     }
 
-    async isValidOrFail(id: number, type: string){
+    async isValidOrFail(id: number, type: string, userId: number) {
         if(!this.opTypes[type]) {
             throw new NotFoundException(`Tipo de operación ${type} no encontrado`);
         }
         const category = await this.categoriesRepository.findOne({
             where: {
                 id: id,
-                user_id: 1
+                user_id: userId
             }
         })
 
@@ -110,8 +110,8 @@ export class CategoriesService {
             {slug: 'deuda', label: 'Pago de deudas', type_id: this.opTypes.expense, user_id: user_id},
             {slug: 'ropa', label: 'Ropa', type_id: this.opTypes.expense, user_id: user_id},
             //transferencias
-            {slug: 'extraccion-cajero', label: 'Extracción en cajero automatico', type_id: this.opTypes.expense, user_id: user_id},
-            {slug: 'transferencia', label: 'Transferencia entre cuentas', type_id: this.opTypes.expense, user_id: user_id},
+            {slug: 'extraccion-cajero', label: 'Extracción en cajero automatico', type_id: this.opTypes.transfer, user_id: user_id},
+            {slug: 'transferencia', label: 'Transferencia entre cuentas', type_id: this.opTypes.transfer, user_id: user_id},
             //Ajustes
             {slug: 'ajuste', label: 'Ajuste', type_id: this.opTypes.ajust, user_id: user_id},
         ];

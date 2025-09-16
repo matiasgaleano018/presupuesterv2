@@ -12,8 +12,4 @@ export class CreateBalanceAccountDto {
     @IsNumber()
     @Min(1)
     type_id: number;
-
-    @IsNumber()
-    @Min(1)
-    user_id: number;
 }

@@ -10,8 +10,12 @@ export class BalanceAccountsService {
     private balanceAccountsRepository: Repository<BalanceAccount>,
   ) {}
 
-  create(balanceAccount: Partial<BalanceAccount>): Promise<BalanceAccount> {
-    return this.balanceAccountsRepository.save(balanceAccount);
+  create(userId: number, balanceAccount: Partial<BalanceAccount>): Promise<BalanceAccount> {
+    const account = {
+      ...balanceAccount,
+      user_id: userId,
+    };
+    return this.balanceAccountsRepository.save(account);
   }
 
   async getAll(userId: number) {
@@ -34,6 +38,7 @@ export class BalanceAccountsService {
   async afectAccountAmount(
     id: number,
     amount: number,
+    userId: number,
     manager?: EntityManager,
   ) {
     const repo = manager
@@ -46,7 +51,7 @@ export class BalanceAccountsService {
     }
     const prevAmount = account.amount;
 
-    if (account.user_id !== 1 || account.status !== 100) {
+    if (account.user_id !== userId || account.status !== 100) {
       throw new NotFoundException('Cuenta no encontrada o no disponible');
     }
 
