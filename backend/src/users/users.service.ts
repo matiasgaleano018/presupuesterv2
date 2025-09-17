@@ -7,8 +7,8 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { UserReturn } from './types/user.type';
-import { CategoriesService } from 'src/categories/categories.service';
-import { BalanceAccountsService } from 'src/balance_accounts/balance_accounts.service';
+import { CategoriesService } from '../categories/categories.service';
+import { BalanceAccountsService } from '../balance_accounts/balance_accounts.service';
 
 @Injectable()
 export class UsersService {

@@ -2,7 +2,7 @@ import { Category } from '../../categories/entities/category.entity';
 import { BalanceAccount } from '../../balance_accounts/entities/balance_account.entity';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { BalanceOperations } from '../../operations/entities/balance-operation.entity';
-import { Auth } from 'src/auth/entities/auth.entity';
+import { Auth } from '../../auth/entities/auth.entity';
 
 const statusIdActive = 100;
 @Entity('users')
