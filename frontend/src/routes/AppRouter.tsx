@@ -1,19 +1,18 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "../pages/LoginPage";
+import RegisterPage from "../pages/RegisterPage";
 
 function AppRouter() {
-    return (
-        <Routes>
-            {/* Ruta por defecto: redirige "/" a "/login" */}
-            <Route path="/" element={<Navigate to="/login" />} />
+  return (
+    <Routes>
+      <Route path="/" element={<Navigate to="/login" />} />
 
-            {/* Rutas de tu aplicación */}
-            <Route path="/login" element={<LoginPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
 
-            {/* Ruta 404 */}
-            <Route path="*" element={<h1>404 - Página no encontrada</h1>} />
-        </Routes>
-    )
+      <Route path="*" element={<h1>404 - Página no encontrada</h1>} />
+    </Routes>
+  );
 }
 
-export default AppRouter
+export default AppRouter;
