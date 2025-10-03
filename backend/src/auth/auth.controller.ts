@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, NotFoundException, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from './decorators/public.decorator';
 import { LoginDto } from './dto/login.dto';
@@ -25,5 +25,11 @@ export class AuthController {
     @Post('refresh')
     refreshToken(@Body() refreshDto: RefreshDto){
         return this.authService.refreshToken(refreshDto);
+    }
+
+    @Public()
+    @Post('testFail')
+    testFail(){
+        throw new NotFoundException('Test fail, pero llegaste hasta aca');
     }
 }

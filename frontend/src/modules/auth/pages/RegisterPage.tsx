@@ -1,6 +1,5 @@
-import "./LoginPage.css";
-import BasicAuth from "./components/BasicAuth";
-import RegisterForm from "./components/RegisterForm";
+import BasicAuth from "../components/BasicAuth";
+import RegisterForm from "../components/RegisterForm";
 
 function RegisterPage() {
   return (
