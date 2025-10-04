@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
 
 type Props = {
+  email: string;
+  password: string;
   onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
-function LoginForm({ onSubmit }: Props) {
+function LoginForm({ onSubmit, onChange, email, password }: Props) {
   return (
     <>
       <form onSubmit={onSubmit}>
@@ -14,6 +17,9 @@ function LoginForm({ onSubmit }: Props) {
               className="form-control form-control-lg"
               placeholder="Email"
               name="email"
+              value={email}
+              required
+              onChange={onChange}
             />
           </div>
 
@@ -23,6 +29,9 @@ function LoginForm({ onSubmit }: Props) {
               className="form-control form-control-lg"
               placeholder="Contraseña"
               name="password"
+              value={password}
+              required
+              onChange={onChange}
             />
           </div>
 
