@@ -3,6 +3,8 @@ import api from "../../../api/AxiosClient"
 type body = {
     email: string;
     password: string;
+    first_name?: string;
+    last_name?: string;
 }
 
 type Props = {
@@ -11,7 +13,6 @@ type Props = {
 }
 async function useCallAuthApi({endPoint, body}: Props) {
     const response = await api.post(endPoint, body);
-    console.log(response)
     switch(endPoint) {
         case '/login':
             if(response.status === 201 || response.status === 200) {

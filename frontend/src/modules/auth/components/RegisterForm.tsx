@@ -1,8 +1,26 @@
 import { Link } from "react-router-dom";
 
-function RegisterForm() {
+type Props = {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  firstName: string;
+  lastName: string;
+  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+function RegisterForm({
+  firstName,
+  lastName,
+  email,
+  password,
+  confirmPassword,
+  onSubmit,
+  onChange,
+}: Props) {
   return (
-    <>
+    <form onSubmit={onSubmit}>
       <div className="row">
         <div className="col-6">
           <div className="form-outline form-white mb-4">
@@ -10,7 +28,10 @@ function RegisterForm() {
               type="text"
               className="form-control form-control-lg"
               placeholder="Nombre"
-              name="first_name"
+              name="firstName"
+              value={firstName}
+              onChange={onChange}
+              required
             />
           </div>
         </div>
@@ -19,7 +40,10 @@ function RegisterForm() {
             type="text"
             className="form-control form-control-lg"
             placeholder="Apellido"
-            name="last_name"
+            name="lastName"
+            value={lastName}
+            onChange={onChange}
+            required
           />
         </div>
       </div>
@@ -29,6 +53,9 @@ function RegisterForm() {
           className="form-control form-control-lg"
           placeholder="Email"
           name="email"
+          value={email}
+          onChange={onChange}
+          required
         />
       </div>
 
@@ -38,6 +65,21 @@ function RegisterForm() {
           className="form-control form-control-lg"
           placeholder="Contraseña"
           name="password"
+          value={password}
+          onChange={onChange}
+          required
+        />
+      </div>
+
+      <div className="form-outline form-white mb-4">
+        <input
+          type="password"
+          className="form-control form-control-lg"
+          placeholder="Repetir contraseña"
+          name="confirmPassword"
+          value={confirmPassword}
+          onChange={onChange}
+          required
         />
       </div>
 
@@ -53,7 +95,7 @@ function RegisterForm() {
           </Link>
         </p>
       </div>
-    </>
+    </form>
   );
 }
 
