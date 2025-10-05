@@ -83,6 +83,17 @@ function RegisterForm({
         />
       </div>
 
+      <div>
+        <span className="text-white-50">
+          <ul className="text-start">
+            <li>La contraseña debe tener al menos 6 caracteres</li>
+            <li>
+              Debe tener al menos un número y un carácter especial (@#$.%)
+            </li>
+          </ul>
+        </span>
+      </div>
+
       <button className="btn btn-outline-light btn-lg px-5 mb-4" type="submit">
         Registrarme
       </button>

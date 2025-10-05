@@ -1,10 +1,10 @@
 import { useState, type ChangeEvent } from "react";
 import BasicAuth from "../components/BasicAuth";
 import RegisterForm from "../components/RegisterForm";
-import Alert from "../../../components/ui/Alert";
 import useCallAuthApi from "../hooks/useCallAuthApi";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import useValidatePassword from "../hooks/useValidatePassword";
 
 type FormData = {
   firstName: string;
@@ -16,11 +16,6 @@ type FormData = {
 
 function RegisterPage() {
   const navigate = useNavigate();
-
-  const [alertMessage, setAlertMessage] = useState<string | null>(null);
-  const [alertType, setAlertType] = useState<
-    "success" | "danger" | "info" | "warning" | null
-  >(null);
 
   const [form, setForm] = useState<FormData>({
     firstName: "",
@@ -42,8 +37,26 @@ function RegisterPage() {
     e.preventDefault();
 
     if (form.password !== form.confirmPassword) {
-      setAlertMessage("Las contraseñas no coinciden");
-      setAlertType("danger");
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: "Las contraseñas no coinciden",
+        showConfirmButton: false,
+        timer: 2500,
+      });
+      return;
+    }
+
+    const validatePassword = useValidatePassword(form.password);
+
+    if (!validatePassword.isValid) {
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: validatePassword.message,
+        showConfirmButton: false,
+        timer: 2500,
+      });
       return;
     }
 
@@ -71,8 +84,13 @@ function RegisterPage() {
       const message =
         error.response?.data?.message || error.message || "Error desconocido";
 
-      setAlertMessage(message);
-      setAlertType("danger");
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: message,
+        showConfirmButton: false,
+        timer: 2500,
+      });
     }
   };
 
@@ -81,9 +99,6 @@ function RegisterPage() {
       title="Registrate"
       subtitle="Crea una cuenta y empeza a administrar tus finanzas."
     >
-      {alertMessage && alertType && (
-        <Alert menssage={alertMessage} type={alertType} />
-      )}
       {
         <RegisterForm
           {...form}
