@@ -2,7 +2,6 @@ import { useState, type ChangeEvent } from "react";
 import BasicAuth from "../components/BasicAuth";
 import LoginForm from "../components/LoginForm";
 import useCallAuthApi from "../hooks/useCallAuthApi";
-import Alert from "../../../components/ui/Alert";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
@@ -12,11 +11,6 @@ type FormData = {
 };
 function LoginPage() {
   const navigate = useNavigate();
-
-  const [alertMessage, setAlertMessage] = useState<string | null>(null);
-  const [alertType, setAlertType] = useState<
-    "success" | "danger" | "info" | "warning" | null
-  >(null);
 
   const [form, setForm] = useState<FormData>({
     email: "",
@@ -34,10 +28,7 @@ function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await useCallAuthApi({ endPoint: "/login", body: form });
-
-      setAlertMessage(response.data.message);
-      setAlertType("success");
+      await useCallAuthApi({ endPoint: "/login", body: form });
 
       Swal.fire({
         position: "top-end",
@@ -52,8 +43,13 @@ function LoginPage() {
       const message =
         error.response?.data?.message || error.message || "Error desconocido";
 
-      setAlertMessage(message);
-      setAlertType("danger");
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 
@@ -62,9 +58,6 @@ function LoginPage() {
       title="Iniciar sesión"
       subtitle="Inicia sesión y comienza a administrar tus finanzas."
     >
-      {alertMessage && alertType && (
-        <Alert menssage={alertMessage} type={alertType} />
-      )}
       <LoginForm onSubmit={handleSubmit} onChange={handleChange} {...form} />
     </BasicAuth>
   );
