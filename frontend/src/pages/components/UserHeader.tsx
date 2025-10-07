@@ -1,6 +1,11 @@
 import Avatar from "react-avatar";
+import useGetUser from "../../modules/users/hooks/useGetUser";
 
 function UserHeader() {
+  const users = useGetUser();
+
+  console.log(users);
+
   return (
     <>
       <header className="navbar navbar-expand-md d-print-none" >
@@ -16,8 +21,7 @@ function UserHeader() {
           <div className="navbar-nav flex-row order-md-last">
             <div className="nav-item dropdown">
               <a href="#" className="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
-                <span className="avatar avatar-sm"><Avatar name="Matías Galeano" round={true} size="35" color="#4C9AFF" />
-</span>
+                <span className="avatar avatar-sm"><Avatar name="Matías Galeano" round={true} size="35" color="#4C9AFF" /></span>
                 <div className="d-none d-xl-block ps-2">
                   <div>Matias Galeano</div>
                 </div>
