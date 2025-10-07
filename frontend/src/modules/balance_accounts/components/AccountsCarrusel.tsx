@@ -14,7 +14,7 @@ function AccountsCarrusel() {
             data-bs-ride="carousel"
           >
             <div className="carousel-inner">
-              <div className="container" style={{ width: "80%" }}>
+              <div className="container" style={{ width: "85%" }}>
                 <div id="carouselExample" className="carousel slide">
                   <div className="carousel-inner">
                     <div className="carousel-item active">
@@ -54,13 +54,6 @@ function AccountsCarrusel() {
               ></span>
               <span className="visually-hidden">Siguiente</span>
             </a>
-          </div>
-          <div className="container pt-4 d-flex justify-content-center">
-            <button className="btn btn-outline-primary d-flex align-items-center justify-content-center w-100">
-              <p className="mb-0 fw-bold">
-                <i className="fas fa-eye px-2"></i>VER CUENTAS
-              </p>
-            </button>
           </div>
         </div>
       </div>

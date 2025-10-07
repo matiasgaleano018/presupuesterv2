@@ -8,7 +8,7 @@ function AccountCard() {
               <div className="subheader">Efectivo</div>
             </div>
             <div className="d-flex align-items-baseline">
-              <div className="fa-3x mb-0 me-2">$4,300</div>
+              <div className="fa-3x mb-0 me-2">Gs 2.850.000</div>
               <div className="me-auto">
                 <span className="text-green d-inline-flex align-items-center lh-1">
                   8%
