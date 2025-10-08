@@ -1,6 +1,46 @@
+import { useEffect, useState } from "react";
 import AccountCard from "./AccountCard";
+import useGetAccounts from "../hooks/useGetAccounts";
+import Swal from "sweetalert2";
 
+type AccType = {
+  id: number;
+  label: string;
+  slug: string;
+  status: number;
+  created_at: Date;
+  updated_at: Date;
+};
+type ResponseData = {
+  id: number;
+  type_id: number;
+  label: string;
+  user_id: number;
+  amount: number;
+  number: string;
+  status: number;
+  description: string;
+  type: AccType;
+  created_at: Date;
+  updated_at: Date;
+};
 function AccountsCarrusel() {
+  const [accounts, setAccounts] = useState<ResponseData[]>([]);
+
+  useEffect(() => {
+    useGetAccounts()
+      .then((data) => setAccounts(data))
+      .catch((error) => {
+        Swal.fire({
+          position: "top-end",
+          icon: "error",
+          title: error.message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      });
+  }, []);
+
   return (
     <>
       <div className="card py-4 border-0">
@@ -17,15 +57,15 @@ function AccountsCarrusel() {
               <div className="container" style={{ width: "85%" }}>
                 <div id="carouselExample" className="carousel slide">
                   <div className="carousel-inner">
-                    <div className="carousel-item active">
-                      <AccountCard />
-                    </div>
-                    <div className="carousel-item">
-                      <AccountCard />
-                    </div>
-                    <div className="carousel-item">
-                      <AccountCard />
-                    </div>
+                    {accounts.map((account) => (
+                      <div className="carousel-item active" key={account.id}>
+                        <AccountCard
+                          type_label={account.type.label}
+                          account_number={account.number}
+                          amount={account.amount}
+                        />
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>

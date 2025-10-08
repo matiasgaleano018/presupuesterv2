@@ -10,13 +10,15 @@ export class BalanceAccountsController {
   constructor(private readonly balanceAccountsService: BalanceAccountsService) {}
 
   @Get('/')
-  getAll() {
-    return this.balanceAccountsService.getAll(1);
+  getAll(@GetUser() req: Auth) {
+    const userId = req.user_id;
+    return this.balanceAccountsService.getAll(userId);
   }
 
   @Get(':typeId')
-  getByTypeId(@Param('typeId', ParseIntPipe) typeId: number) {
-    return this.balanceAccountsService.getByTypeId(1, typeId);
+  getByTypeId(@GetUser() req: Auth, @Param('typeId', ParseIntPipe) typeId: number) {
+    const userId = req.user_id;
+    return this.balanceAccountsService.getByTypeId(userId, typeId);
   }
 
   @Post()
