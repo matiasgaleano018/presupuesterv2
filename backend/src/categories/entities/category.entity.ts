@@ -1,6 +1,7 @@
 import { User } from '../../users/entities/user.entity';
 import { OperationTypes } from '../../operations/entities/operation-type.entity';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToOne, JoinColumn, Index } from 'typeorm';
+import { BalanceOperations } from 'src/operations/entities/balance-operation.entity';
 
 const statusIdActive = 100;
 @Entity('categories')
@@ -38,4 +39,7 @@ export class Category {
     @ManyToOne(() => User, (user) => user.categories)
     @JoinColumn({ name: 'user_id' })
     user: User
+
+    @OneToMany(() => BalanceOperations, (operation) => operation.category)
+    operations: BalanceOperations[]
 }

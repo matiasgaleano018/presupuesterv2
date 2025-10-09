@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { BalanceOperations } from './balance-operation.entity';
+import { BalanceAccount } from 'src/balance_accounts/entities/balance_account.entity';
 
 const statusIdActive = 100;
 @Entity('balance_details')
@@ -34,4 +35,8 @@ export class BalanceDetails {
   @ManyToOne(() => BalanceOperations, (operation) => operation.details)
   @JoinColumn({ name: 'operation_id' })
   operation: BalanceOperations;
+
+  @ManyToOne(() => BalanceAccount, (account) => account.details)
+  @JoinColumn({ name: 'account_id' })
+  account: BalanceAccount;
 }

@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import { OperationTypes } from './operation-type.entity';
 import { BalanceDetails } from './balance-detail.entity';
 import { User } from '../../users/entities/user.entity';
+import { Category } from 'src/categories/entities/category.entity';
 
 const statusIdActive = 100;
 @Entity('balance_operations')
@@ -31,7 +32,7 @@ export class BalanceOperations {
     @UpdateDateColumn({ type: 'timestamp' })
     updated_at: Date;
 
-    @OneToMany(() => BalanceDetails, (detail) => detail.operation_id)
+    @OneToMany(() => BalanceDetails, (detail) => detail.operation)
     details: BalanceDetails[];
 
     @ManyToOne(() => OperationTypes, (type) => type.operations)
@@ -41,4 +42,8 @@ export class BalanceOperations {
     @ManyToOne(() => User, (user) => user.operations)
     @JoinColumn({ name: 'user_id' })
     user: User
+
+    @ManyToOne(() => Category, (category) => category.operations)
+    @JoinColumn({ name: 'category_id' })
+    category: Category
 }

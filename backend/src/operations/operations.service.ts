@@ -11,6 +11,7 @@ import { ExpenseOperationService } from './operations-types/expense-operation.se
 import { TransferOperationService } from './operations-types/transfer-operation.service';
 import { AjustOperationService } from './operations-types/ajust-operation.service';
 import { CategoriesService } from '../categories/categories.service';
+import { FilterOperationsDto } from './dto/filter-operations.dto';
 
 @Injectable()
 export class OperationsService {
@@ -31,6 +32,43 @@ export class OperationsService {
         private readonly ajustOperationService: AjustOperationService
 
     ) {}
+
+    async getMovements(userId: number, filterOp: FilterOperationsDto): Promise<BalanceOperations[]> {
+        let filters = {};
+        if(filterOp?.category_id !== undefined && filterOp?.category_id !== null) {
+            filters = {...filters, 'category_id': filterOp.category_id};
+        }
+        if(filterOp?.type_slug !== undefined && filterOp?.type_slug !== null) {
+            filters = {...filters, 'type_slug': filterOp.type_slug};
+        }
+        if(filterOp?.amount !== undefined && filterOp?.amount !== null) {
+            filters = {...filters, 'amount': filterOp.amount};
+        }
+        if(filterOp?.target_account_id !== undefined && filterOp?.target_account_id !== null) {
+            filters = {...filters, 'target_account_id': filterOp.target_account_id};
+        }
+        if(filterOp?.source_account_id !== undefined && filterOp?.source_account_id !== null) {
+            filters = {...filters, 'source_account_id': filterOp.source_account_id};
+        }
+        filters = {...filters, 'user_id': userId};
+        
+        // return this.balanceOperationsRepository.find({
+        //     where: filters,
+        //     order: { 'created_at': 'DESC' },
+        //     take: filterOp?.limit || 10,
+        //     relations: ['type', 'category']
+        // }
+
+        return this.balanceOperationsRepository.createQueryBuilder('operation')
+        .where(filters)
+        .orderBy('operation.created_at', 'DESC')
+        .take(filterOp?.limit || 10)
+        .leftJoinAndSelect('operation.details', 'detail')
+        .leftJoinAndSelect('detail.account', 'account')
+        .leftJoinAndSelect('operation.type', 'type')
+        .leftJoinAndSelect('operation.category', 'category')
+        .getMany();
+    }
 
     async createMovement(userId: number, operation: CreateOperationDto): Promise<BalanceOperations> {
         return this.balanceOperationsRepository.manager.transaction(
