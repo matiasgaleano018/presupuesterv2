@@ -1,4 +1,11 @@
+import { useNavigate } from "react-router-dom";
+
 function MovementButtons() {
+  const navigate = useNavigate();
+  const handleClick = (type: "income" | "expense" | "transfer") => {
+    navigate(`/operations/${type}`);
+  };
+
   return (
     <>
       <div className="card border-0">
@@ -9,6 +16,7 @@ function MovementButtons() {
           <div className="row">
             <div className="col-4 d-flex flex-column align-items-center justify-content-center">
               <button
+                onClick={() => handleClick("income")}
                 className="btn btn-outline-light d-flex flex-column align-items-center justify-content-center shadow"
                 style={{
                   width: "100%",
@@ -22,6 +30,7 @@ function MovementButtons() {
             </div>
             <div className="col-4 d-flex flex-column align-items-center justify-content-center">
               <button
+                onClick={() => handleClick("expense")}
                 className="btn btn-outline-light d-flex flex-column align-items-center justify-content-center shadow"
                 style={{
                   width: "100%",
@@ -35,6 +44,7 @@ function MovementButtons() {
             </div>
             <div className="col-4 d-flex flex-column align-items-center justify-content-center">
               <button
+                onClick={() => handleClick("transfer")}
                 className="btn btn-outline-light d-flex flex-column align-items-center justify-content-center shadow"
                 style={{
                   width: "100%",
