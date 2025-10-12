@@ -36,6 +36,15 @@ type detailData = {
   created_at: string;
   updated_at: string;
 };
+
+type typeOpData = {
+  id: number;
+  slug: string;
+  label: string;
+  status: number;
+  created_at: string;
+  updated_at: string;
+};
 type movementsData = {
   id: number;
   type_id: number;
@@ -44,12 +53,17 @@ type movementsData = {
   amount: number;
   category: categoryData;
   details: detailData[];
+  type: typeOpData;
   status: number;
   created_at: string;
   updated_at: string;
 };
-async function useGetMovements(): Promise<movementsData[]> {
-  const response = await api.get("/op");
+
+type Props = {
+  body?: object;
+};
+async function useGetMovements({ body = {} }: Props): Promise<movementsData[]> {
+  const response = await api.get("/op", body);
 
   return response.data;
 }

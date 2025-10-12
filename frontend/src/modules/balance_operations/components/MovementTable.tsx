@@ -54,7 +54,7 @@ function MovementTable() {
   const [movements, setMovements] = useState<movementsData[]>([]);
 
   useEffect(() => {
-    useGetMovements()
+    useGetMovements({ body: { limit: 3 } })
       .then((data) => setMovements(data))
       .catch((error) => {
         console.log(error);
