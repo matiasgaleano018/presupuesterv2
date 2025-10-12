@@ -60,10 +60,12 @@ type movementsData = {
 };
 
 type Props = {
-  body?: object;
+  params?: object;
 };
-async function useGetMovements({ body = {} }: Props): Promise<movementsData[]> {
-  const response = await api.get("/op", body);
+async function useGetMovements({
+  params = {},
+}: Props): Promise<movementsData[]> {
+  const response = await api.get("/op", { params });
 
   return response.data;
 }

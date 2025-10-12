@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsString, IsNumber, Min, IsOptional } from 'class-validator';
 
 export class FilterOperationsDto {
@@ -6,23 +7,28 @@ export class FilterOperationsDto {
     type_slug: string;
 
     @IsOptional()
+    @Type(() => Number)
     @IsNumber()
     @Min(1)
     category_id: number;
 
     @IsOptional()
+    @Type(() => Number)
     @IsNumber()
     amount: number;
 
     @IsOptional()
+    @Type(() => Number)
     @IsNumber()
     target_account_id: number;
 
     @IsOptional()
+    @Type(() => Number)
     @IsNumber()
     source_account_id: number;
 
     @IsOptional()
+    @Type(() => Number)
     @IsNumber()
     limit: number;
 }

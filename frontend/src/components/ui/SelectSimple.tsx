@@ -1,5 +1,6 @@
 import Select from "react-select";
 import type { StylesConfig } from "react-select";
+import type { SingleValue } from "react-select";
 
 type OptionType = {
   value: string | number;
@@ -8,7 +9,7 @@ type OptionType = {
 
 type Props = {
   options: OptionType[];
-  onChange: () => void;
+  onChange: (value: SingleValue<OptionType>) => void;
   name: string;
   placeholder: string;
 };
@@ -18,7 +19,7 @@ export default function CategoriaSelect({
   name,
   placeholder,
 }: Props) {
-  const customStyles: StylesConfig<OptionType> = {
+  const customStyles: StylesConfig<OptionType, false> = {
     control: (provided, state) => ({
       ...provided,
       backgroundColor: "#111827",
@@ -71,7 +72,7 @@ export default function CategoriaSelect({
       options={options}
       styles={customStyles}
       placeholder={placeholder}
-      onChange={onChange}
+      onChange={(value) => onChange(value)}
       isClearable
       name={name}
     />

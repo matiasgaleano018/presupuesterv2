@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import useGetMovements from "../hooks/useGetMovements";
 import CardOperations from "./CardOperations";
 import AmountLabel from "../../../components/ui/AmountLabel";
+import Swal from "sweetalert2";
 
 type movements = {
   amount: number;
@@ -13,6 +14,7 @@ type movements = {
   type: string;
   id: number;
 };
+
 function AddMovement() {
   const [movements, setMovements] = useState<movements[]>([]);
   const navigate = useNavigate();
@@ -24,12 +26,30 @@ function AddMovement() {
     return null;
   }
 
+  const onSuccess = () => {
+    Swal.fire({
+      title: "Movimiento agregado!",
+      text: "¿Desas agregar un nuevo movimiento?",
+      icon: "success",
+      showCancelButton: true,
+      confirmButtonColor: "#2FB344",
+      cancelButtonColor: "#9CA3AF",
+      confirmButtonText: "Agregar otro",
+      cancelButtonText: "Ir al inicio",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.reload();
+      } else {
+        navigate("/");
+      }
+    });
+  };
+
   useEffect(() => {
-    useGetMovements({})
+    useGetMovements({ params: { limit: 3 } })
       .then((data) =>
         setMovements(
           data.map((mov) => {
-            console.log(mov);
             return {
               id: mov.id,
               amount: mov.amount,
@@ -55,7 +75,7 @@ function AddMovement() {
           </div>
           <div className="card-body">
             <div className="table-responsive">
-              <FormMovement type={type} />
+              <FormMovement type={type} onSuccess={onSuccess} />
             </div>
           </div>
           <div className="card-footer">

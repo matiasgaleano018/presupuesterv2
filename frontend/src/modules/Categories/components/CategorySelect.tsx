@@ -3,14 +3,15 @@ import useGetCategories from "../hooks/useGetCategories";
 import SelectSimple from "../../../components/ui/SelectSimple";
 
 type categoryOptions = {
-  value: number;
+  value: number | string;
   label: string;
 };
 
 type Props = {
   type: "income" | "expense" | "transfer" | "ajust";
+  selectOnChange: (value: categoryOptions | null) => void;
 };
-function CategorySelect({ type }: Props) {
+function CategorySelect({ type, selectOnChange }: Props) {
   const [categories, setCategories] = useState<categoryOptions[]>([]);
   useEffect(() => {
     useGetCategories(type)
@@ -29,7 +30,7 @@ function CategorySelect({ type }: Props) {
     <>
       <SelectSimple
         options={categories}
-        onChange={() => {}}
+        onChange={selectOnChange}
         name="category_id"
         placeholder="Seleccione una categoria"
       />

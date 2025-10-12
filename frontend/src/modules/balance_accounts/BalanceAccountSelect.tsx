@@ -7,10 +7,16 @@ type BalanceAccountOptions = {
   value: number;
   label: string;
 };
+
+type OptionType = {
+  value: string | number;
+  label: string;
+};
 type Props = {
   name: string;
+  selectOnChange: (value: OptionType | null) => void;
 };
-function BalanceAccountSelect({ name }: Props) {
+function BalanceAccountSelect({ name, selectOnChange }: Props) {
   const [accounts, setAccounts] = useState<BalanceAccountOptions[]>([]);
   useEffect(() => {
     useGetAccounts()
@@ -44,7 +50,7 @@ function BalanceAccountSelect({ name }: Props) {
     <>
       <SelectSimple
         options={accounts}
-        onChange={() => {}}
+        onChange={selectOnChange}
         name={name}
         placeholder="Seleccione una cuenta"
       />

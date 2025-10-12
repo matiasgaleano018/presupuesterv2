@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { OperationsService } from './operations.service';
 import { CreateOperationDto } from './dto/create-operation.dto';
 import { GetUser } from '../decorators/get-user.decorator';
@@ -10,7 +10,7 @@ export class OperationsController {
     constructor(private operationsService: OperationsService) {}
 
     @Get()
-    async getMovements(@GetUser() req: Auth, @Body() opFilter: FilterOperationsDto) {
+    async getMovements(@GetUser() req: Auth, @Query() opFilter: FilterOperationsDto) {
         const userId = req.user_id;
         return await this.operationsService.getMovements(userId, opFilter);
     }
