@@ -27,7 +27,12 @@ function CategorySelect({ type }: Props) {
   }, [type]);
   return (
     <>
-      <SelectSimple options={categories} onChange={() => {}} />
+      <SelectSimple
+        options={categories}
+        onChange={() => {}}
+        name="category_id"
+        placeholder="Seleccione una categoria"
+      />
     </>
   );
 }

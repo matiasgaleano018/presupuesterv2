@@ -1,17 +1,11 @@
-import SelectSimple from "../../../components/ui/SelectSimple";
 import { NumericFormat } from "react-number-format";
 import CategorySelect from "../../Categories/components/CategorySelect";
+import BalanceAccountSelect from "../../balance_accounts/BalanceAccountSelect";
 
 type Props = {
   type: "income" | "expense" | "transfer" | "ajust";
 };
 function FormMovement({ type }: Props) {
-  const options = [
-    { value: "Option 1", label: "Option 1" },
-    { value: "Option 2", label: "Option 2" },
-    { value: "Option 3", label: "Option 3" },
-  ];
-
   return (
     <>
       <form>
@@ -41,14 +35,14 @@ function FormMovement({ type }: Props) {
               <label htmlFor="category" className="form-label">
                 Cuenta de origen
               </label>
-              <SelectSimple options={options} onChange={() => {}} />
+              <BalanceAccountSelect name="source_account_id" />
             </div>
           )}
           <div className="form-outline form-white mb-4">
             <label htmlFor="category" className="form-label">
               Cuenta de destino
             </label>
-            <SelectSimple options={options} onChange={() => {}} />
+            <BalanceAccountSelect name="target_account_id" />
           </div>
           <div className="form-outline form-white mb-4">
             <label htmlFor="amount" className="form-label">
