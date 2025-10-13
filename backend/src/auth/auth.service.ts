@@ -87,9 +87,14 @@ export class AuthService {
             where: {
                 access_token: token,
                 access_expires_at: MoreThan(new Date()),
+                status: 100,
             },
             relations: ['user'],
         });
+    }
+
+    async logout(userId: number) {
+        return await this.authRepository.update({ user_id: userId }, { access_expires_at: new Date(), status: 1 });
     }
 
 }

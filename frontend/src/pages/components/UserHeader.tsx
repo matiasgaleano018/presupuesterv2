@@ -2,6 +2,8 @@ import Avatar from "react-avatar";
 import useGetUser from "../../modules/users/hooks/useGetUser";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import useLogout from "../../modules/auth/hooks/useLogout";
+import { Link, useNavigate } from "react-router-dom";
 
 type userData = {
   id: number;
@@ -10,6 +12,7 @@ type userData = {
   last_name: string;
 };
 function UserHeader() {
+  const navigate = useNavigate();
   const [user, setUser] = useState<userData | null>(null);
 
   useEffect(() => {
@@ -25,6 +28,24 @@ function UserHeader() {
         });
       });
   }, []);
+
+  const handleLogout = async () => {
+    Swal.fire({
+      title: "¿Deseas cerrar sesión?",
+      showCancelButton: true,
+      confirmButtonText: "Cerrar sesión",
+      cancelButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await useLogout();
+          navigate("/login");
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    });
+  };
 
   return (
     <>
@@ -42,7 +63,7 @@ function UserHeader() {
             <span className="navbar-toggler-icon"></span>
           </button>
           <h1 className="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-            <a href=".">
+            <Link to="/">
               <img
                 src="/logo.png"
                 width="110"
@@ -50,7 +71,7 @@ function UserHeader() {
                 className="navbar-brand-image"
               />{" "}
               Presupuester
-            </a>
+            </Link>
           </h1>
           <div className="navbar-nav flex-row order-md-last">
             <div className="nav-item dropdown">
@@ -76,11 +97,8 @@ function UserHeader() {
                 <a href="#" className="dropdown-item">
                   Mi perfil
                 </a>
-                <a href="#" className="dropdown-item">
-                  Configuraciones
-                </a>
                 <div className="dropdown-divider"></div>
-                <a href="./sign-in.html" className="dropdown-item">
+                <a onClick={handleLogout} className="dropdown-item">
                   Cerrar sesión
                 </a>
               </div>
