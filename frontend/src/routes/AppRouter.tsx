@@ -3,6 +3,8 @@ import LoginPage from "../modules/auth/pages/LoginPage";
 import RegisterPage from "../modules/auth/pages/RegisterPage";
 import Home from "../pages/Home";
 import AddMovement from "../modules/balance_operations/components/AddMovement";
+import AccountsPage from "../modules/balance_accounts/pages/AccountsPage";
+import AddAccountsPage from "../modules/balance_accounts/pages/AddAccountsPage";
 
 function AppRouter() {
   const token = localStorage.getItem("token");
@@ -14,6 +16,9 @@ function AppRouter() {
       <Route path="/register" element={<RegisterPage />} />
 
       <Route path="/operations/:type" element={<AddMovement />}></Route>
+
+      <Route path="/accounts" element={<AccountsPage />}></Route>
+      <Route path="/accounts/new" element={<AddAccountsPage />}></Route>
 
       <Route path="*" element={<h1>404 - Página no encontrada</h1>} />
     </Routes>

@@ -4,12 +4,13 @@ type Props = {
   type_label: string;
   account_number: string;
   amount: number;
+  children?: React.ReactNode;
 };
 
-function AccountCard({ type_label, account_number, amount }: Props) {
+function AccountCard({ type_label, account_number, amount, children }: Props) {
   return (
     <>
-      <div className="container h-50">
+      <div className="container">
         <div className="card">
           <div className="card-body">
             <div className="d-flex align-items-center">
@@ -22,6 +23,7 @@ function AccountCard({ type_label, account_number, amount }: Props) {
                 <AmountLabel value={amount} />
               </div>
             </div>
+            {children}
           </div>
           <div id="chart-revenue-bg" className="chart-sm"></div>
         </div>
