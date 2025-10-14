@@ -2,12 +2,16 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { BalanceAccount } from './entities/balance_account.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, EntityManager } from 'typeorm';
+import { BalanceAccountTypes } from './entities/balance_account_type.entity';
 
 @Injectable()
 export class BalanceAccountsService {
   constructor(
     @InjectRepository(BalanceAccount)
     private balanceAccountsRepository: Repository<BalanceAccount>,
+
+    @InjectRepository(BalanceAccountTypes)
+    private balanceAccountsTypesRepository: Repository<BalanceAccountTypes>,
   ) {}
 
   create(userId: number, balanceAccount: Partial<BalanceAccount>): Promise<BalanceAccount> {
@@ -23,6 +27,10 @@ export class BalanceAccountsService {
       where: { user_id: userId },
       relations: ['type'],
     });
+  }
+
+  async getAllTypes(){
+    return await this.balanceAccountsTypesRepository.find();
   }
 
   async getByTypeId(userId: number, typeId: number) {

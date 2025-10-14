@@ -32,4 +32,9 @@ export class BalanceAccountsController {
     return this.balanceAccountsService.update(id, updateBalanceAccountDto);
   }
 
+  @Get('/resources/types')
+  getAllTypes() {
+    return this.balanceAccountsService.getAllTypes();
+  }
+
 }
