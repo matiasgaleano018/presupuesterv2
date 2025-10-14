@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import useGetMovements from "../hooks/useGetMovements";
+import { formatAsuncionDate } from "../../../utils/dateUtils";
 
 type categoryData = {
   id: number;
@@ -54,7 +55,7 @@ function MovementTable() {
   const [movements, setMovements] = useState<movementsData[]>([]);
 
   useEffect(() => {
-    useGetMovements({ body: { limit: 3 } })
+    useGetMovements({ params: { limit: 5 } })
       .then((data) => setMovements(data))
       .catch((error) => {
         console.log(error);
@@ -97,7 +98,7 @@ function MovementTable() {
                     <td>{movement.category.label}</td>
                     <td>{movement.amount}</td>
                     <td>{movement.details[0].account.label}</td>
-                    <td>{movement.created_at.toLocaleString()}</td>
+                    <td>{formatAsuncionDate(movement.created_at)}</td>
                   </tr>
                 ))}
               </tbody>

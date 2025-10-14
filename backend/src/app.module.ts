@@ -29,6 +29,7 @@ import { AuthGuard } from './auth/guards/auth.guard';
         database: configService.get<string>('DB_DATABASENAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true,
+        timezone: 'Z',
       }),
       inject: [ConfigService],
     }),
