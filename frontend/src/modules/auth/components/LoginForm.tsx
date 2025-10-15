@@ -1,15 +1,57 @@
+import { useState, type ChangeEvent } from "react";
 import { Link } from "react-router-dom";
+import useCallAuthApi from "../hooks/useCallAuthApi";
+import Swal from "sweetalert2";
 
-type Props = {
+type FormData = {
   email: string;
   password: string;
-  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
-function LoginForm({ onSubmit, onChange, email, password }: Props) {
+function LoginForm() {
+  const [form, setForm] = useState<FormData>({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await useCallAuthApi({ endPoint: "/login", body: form });
+
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Inicio de sesión exitoso",
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(() => {
+        window.location.href = "/";
+      });
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message || error.message || "Error desconocido";
+
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  };
+
   return (
     <>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className="mb-md-5 mt-md-4 pb-5">
           <div className="form-outline form-white mb-4">
             <input
@@ -17,9 +59,9 @@ function LoginForm({ onSubmit, onChange, email, password }: Props) {
               className="form-control form-control-lg"
               placeholder="Email"
               name="email"
-              value={email}
+              value={form.email}
               required
-              onChange={onChange}
+              onChange={handleChange}
             />
           </div>
 
@@ -29,9 +71,9 @@ function LoginForm({ onSubmit, onChange, email, password }: Props) {
               className="form-control form-control-lg"
               placeholder="Contraseña"
               name="password"
-              value={password}
+              value={form.password}
               required
-              onChange={onChange}
+              onChange={handleChange}
             />
           </div>
 

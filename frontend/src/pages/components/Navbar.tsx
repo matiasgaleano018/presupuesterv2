@@ -35,9 +35,9 @@ function Navbar() {
                 <li className="nav-item">
                   <NavLink className="nav-link" to="/login">
                     <span className="nav-link-icon d-md-none d-lg-inline-block">
-                      <i className="fas fa-cogs"></i>
+                      <i className="fas fa-boxes"></i>
                     </span>
-                    <span className="nav-link-title">Configuraciones</span>
+                    <span className="nav-link-title">Categorias</span>
                   </NavLink>
                 </li>
               </ul>

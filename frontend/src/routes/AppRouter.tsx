@@ -10,10 +10,12 @@ function AppRouter() {
   const token = localStorage.getItem("token");
   return (
     <Routes>
-      <Route path="/" element={token ? <Home /> : <Navigate to="/login" />} />
-
+      {/* Rutas públicas */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+
+      {/* Rutas privadas se controla el token */}
+      <Route path="/" element={token ? <Home /> : <Navigate to="/login" />} />
 
       <Route path="/operations/:type" element={<AddMovement />}></Route>
 
