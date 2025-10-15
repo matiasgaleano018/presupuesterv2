@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import BaseLayout from "../../../pages/components/BaseLayout";
-import useGetAccounts from "../hooks/useGetAccounts";
 import Swal from "sweetalert2";
 import AccountCard from "../components/AccountCard";
 import { formatAsuncionDate } from "../../../utils/dateUtils";
 import { Link } from "react-router-dom";
+import useGetAccounts from "../hooks/useGetAccounts";
 
 type AccType = {
   id: number;
@@ -62,16 +62,21 @@ function AccountsPage() {
               </Link>
             </div>
             <div className="table-responsive mb-4">
-              <div className="row">
+              <div className="row w-100">
                 {accounts.map((account) => (
-                  <div className="col-md-4 col-12" key={account.id}>
+                  <div className="col-md-4 col-12 mb-3" key={account.id}>
                     <AccountCard
                       key={account.id}
-                      type_label={account.type.label}
+                      type_label={account.label}
                       account_number={account.number}
                       amount={account.amount}
                     >
                       <div className="row">
+                        <div className="col-12">
+                          <div className="text-muted">
+                            Tipo: {account.type.label}
+                          </div>
+                        </div>
                         <div className="col-12">
                           <div className="text-muted">
                             Creado el: {formatAsuncionDate(account.created_at)}

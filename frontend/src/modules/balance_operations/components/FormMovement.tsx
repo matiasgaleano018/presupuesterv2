@@ -4,6 +4,7 @@ import BalanceAccountSelect from "../../balance_accounts/BalanceAccountSelect";
 import { Link } from "react-router-dom";
 import usePostMovements from "../hooks/usePostMovements";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 type OptionType = {
   value: string | number;
@@ -33,6 +34,46 @@ function FormMovement({ type, onSuccess }: Props) {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (formData.category_id === 0) {
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: "Debes seleccionar una categoría",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
+    if (formData.target_account_id === 0) {
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: "Debes seleccionar una cuenta de destino",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
+    if (type === "transfer" && formData.source_account_id === undefined) {
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: "Debes seleccionar una cuenta de origen",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
+    if (
+      type === "transfer" &&
+      formData.source_account_id === formData.target_account_id
+    ) {
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: "Debes seleccionar una cuenta diferente para el origen/destino",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
     try {
       await usePostMovements({ body: formData });
 

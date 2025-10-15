@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import AccountCard from "./AccountCard";
-import useGetAccounts from "../hooks/useGetAccounts";
 import Swal from "sweetalert2";
+import useGetAccounts from "../hooks/useGetAccounts";
 
 type AccType = {
   id: number;
@@ -60,7 +60,7 @@ function AccountsCarrusel() {
                     {accounts.map((account) => (
                       <div className="carousel-item active" key={account.id}>
                         <AccountCard
-                          type_label={account.type.label}
+                          type_label={account.label}
                           account_number={account.number}
                           amount={account.amount}
                         />
