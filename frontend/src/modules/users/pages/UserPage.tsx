@@ -4,6 +4,7 @@ import FormUser from "../components/FormUser";
 import useGetUser from "../hooks/useGetUser";
 import Swal from "sweetalert2";
 import Avatar from "react-avatar";
+import usePutUser from "../hooks/usePutUser";
 
 type userData = {
   id: number;
@@ -42,8 +43,27 @@ function UserPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    try {
+      await usePutUser({ body: user });
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Usuario actualizado",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } catch (error: any) {
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: error.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
   return (
     <>
