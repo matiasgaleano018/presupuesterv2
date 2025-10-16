@@ -122,7 +122,6 @@ function FormCategory() {
             <input
               type="text"
               className="form-control form-control-lg"
-              placeholder="Agregue una etiqueta"
               name="label"
               required
               readOnly

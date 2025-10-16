@@ -15,8 +15,9 @@ export class UsersController {
     return userInfo;
   }
 
-  @Put(':id')
-  async updateUser(@Param('id', ParseIntPipe) id: number, @Body() user: UpdateUserDto) {
+  @Put('/')
+  async updateUser(@GetUser() req: Auth, @Body() user: UpdateUserDto) {
+    const id = req.user.id;
     return await this.usersService.updateUser(id, user);
   }
 }

@@ -83,7 +83,9 @@ function UserHeader() {
               >
                 <span className="avatar avatar-sm">
                   <Avatar
-                    name={`${user?.first_name} ${user?.last_name}`}
+                    name={`${user?.first_name.charAt(
+                      0
+                    )} ${user?.last_name.charAt(0)}`}
                     round={true}
                     size="35"
                     color="#4C9AFF"
@@ -94,9 +96,12 @@ function UserHeader() {
                 </div>
               </a>
               <div className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <a href="#" className="dropdown-item">
+                <Link to="/profile" className="dropdown-item">
                   Mi perfil
-                </a>
+                </Link>
+                <Link to="/" className="dropdown-item">
+                  Cambiar contraseña
+                </Link>
                 <div className="dropdown-divider"></div>
                 <a onClick={handleLogout} className="dropdown-item">
                   Cerrar sesión
