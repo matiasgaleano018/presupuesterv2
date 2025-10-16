@@ -13,12 +13,7 @@ type Props = {
   name: string;
   placeholder: string;
 };
-export default function CategoriaSelect({
-  options,
-  onChange,
-  name,
-  placeholder,
-}: Props) {
+function SelectSimple({ options, onChange, name, placeholder }: Props) {
   const customStyles: StylesConfig<OptionType, false> = {
     control: (provided, state) => ({
       ...provided,
@@ -78,3 +73,5 @@ export default function CategoriaSelect({
     />
   );
 }
+
+export default SelectSimple;

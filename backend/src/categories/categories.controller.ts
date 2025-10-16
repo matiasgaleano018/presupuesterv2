@@ -9,6 +9,12 @@ import { Auth } from '../auth/entities/auth.entity';
 export class CategoriesController {
     constructor(private categoriesService: CategoriesService) {}
 
+    @Get('/')
+    async getCategories(@GetUser() req: Auth) {
+        const userId = req.user_id;
+        return await this.categoriesService.getCategories(userId);
+    }
+
     @Get('typeId/:typeId')
     async getCategoriesByTypeId(@GetUser() req: Auth, @Param('typeId', ParseIntPipe) typeId: number) {
         const userId = req.user_id;

@@ -6,6 +6,8 @@ import AddMovement from "../modules/balance_operations/components/AddMovement";
 import AccountsPage from "../modules/balance_accounts/pages/AccountsPage";
 import AddAccountsPage from "../modules/balance_accounts/pages/AddAccountsPage";
 import ProtectedRoute from "./ProtectedRoute";
+import CategoriesPage from "../modules/Categories/pages/CategoriesPage";
+import AddCategory from "../modules/Categories/components/AddCategory";
 
 function AppRouter() {
   return (
@@ -21,6 +23,9 @@ function AppRouter() {
 
         <Route path="/accounts" element={<AccountsPage />}></Route>
         <Route path="/accounts/new" element={<AddAccountsPage />}></Route>
+
+        <Route path="/categories" element={<CategoriesPage />}></Route>
+        <Route path="/categories/new" element={<AddCategory />}></Route>
       </Route>
 
       <Route path="*" element={<h1>404 - Página no encontrada</h1>} />

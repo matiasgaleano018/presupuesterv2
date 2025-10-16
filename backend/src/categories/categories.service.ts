@@ -20,6 +20,14 @@ export class CategoriesService {
         'ajust': 40
     }
 
+    async getCategories(userId: number) {
+        return await this.categoriesRepository.find({
+            where: {
+                user_id: userId
+            },
+            relations: ['type']
+        });
+    }
     async getCategoriesByTypeId(userId: number, typeId: number) {
         return await this.categoriesRepository.find({
             where: {

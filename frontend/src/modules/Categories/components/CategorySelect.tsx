@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import useGetCategories from "../hooks/useGetCategories";
 import SelectSimple from "../../../components/ui/SelectSimple";
+import useGetCategories from "../hooks/useGetCategories";
 
 type categoryOptions = {
   value: number | string;
