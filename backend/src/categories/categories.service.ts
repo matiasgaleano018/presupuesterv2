@@ -71,7 +71,7 @@ export class CategoriesService {
 
     async updateCategory(id: number, category: UpdateCategoryDto) {
         let categoryStatus: number;
-        if(category.isActive) {
+        if(category.is_active) {
             categoryStatus = 100;
         }else{
             categoryStatus = 1;

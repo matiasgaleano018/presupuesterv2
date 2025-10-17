@@ -6,6 +6,9 @@ function EditCategory() {
   const { id } = useParams<{
     id: string;
   }>();
+  if (!id || isNaN(Number(id))) {
+    return null;
+  }
   return (
     <>
       <BaseLayout>

@@ -34,7 +34,8 @@ export class CategoriesController {
     }
 
     @Put('/:id')
-    async updateCategory(@Param('id', ParseIntPipe) id: number, category: UpdateCategoryDto) {
+    async updateCategory(@Param('id', ParseIntPipe) id: number, @Body() category: UpdateCategoryDto) {
+        console.log(category);
         return await this.categoriesService.updateCategory(id, category);
     }
 

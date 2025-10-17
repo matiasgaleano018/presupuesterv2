@@ -1,4 +1,4 @@
-import { IsString, IsNumber, MinLength, Min, IsOptional } from 'class-validator';
+import { IsString, IsNumber, MinLength, Min, IsOptional, IsBoolean } from 'class-validator';
 
 export class UpdateCategoryDto {
     @IsString()
@@ -9,6 +9,6 @@ export class UpdateCategoryDto {
     @MinLength(3)
     slug: string;
 
-    @IsNumber()
-    isActive?: number;
+    @IsBoolean()
+    is_active: boolean;
 }

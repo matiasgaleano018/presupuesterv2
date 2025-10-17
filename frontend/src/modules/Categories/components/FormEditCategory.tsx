@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import useToSlug from "../../../components/hooks/useToSlug";
 import Swal from "sweetalert2";
 import useGetCategoryById from "../hooks/useGetByCategoryById";
+import usePutCategories from "../hooks/usePutCategories";
+import Alert from "../../../components/ui/Alert";
 
 type FormData = {
   slug: string;
@@ -15,7 +17,8 @@ type Props = {
 };
 
 function FormEditCategory({ categoryId }: Props) {
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [showAlert, setShowAlert] = useState(false);
 
   const [formData, setFormData] = useState<FormData>({
     slug: "",
@@ -45,52 +48,56 @@ function FormEditCategory({ categoryId }: Props) {
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-      slug: useToSlug(value),
-    }));
+    const { name, value, checked } = e.target;
+    console.log(name, checked);
+    if (name === "is_active") {
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: checked,
+      }));
+      setShowAlert(!checked);
+    } else {
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: value,
+        slug: useToSlug(value),
+      }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // try {
-    //   await usePostCategories({
-    //     body: {
-    //       type_slug: formData.type_slug,
-    //       label: formData.label,
-    //       slug: useToSlug(formData.label),
-    //     },
-    //   });
+    try {
+      await usePutCategories({
+        id: categoryId,
+        body: {
+          label: formData.label,
+          slug: useToSlug(formData.label),
+          is_active: formData.is_active,
+        },
+      });
 
-    //   Swal.fire({
-    //     title: "Categoria creada",
-    //     text: "¿Desas agregar otra?",
-    //     icon: "success",
-    //     showCancelButton: true,
-    //     confirmButtonColor: "#2FB344",
-    //     cancelButtonColor: "#9CA3AF",
-    //     confirmButtonText: "Agregar otro",
-    //     cancelButtonText: "Ir al inicio",
-    //   }).then((result) => {
-    //     if (result.isConfirmed) {
-    //       window.location.reload();
-    //     } else {
-    //       navigate("/");
-    //     }
-    //   });
-    // } catch (error) {
-    //   console.log(error);
-    //   Swal.fire({
-    //     position: "top-end",
-    //     icon: "error",
-    //     title: "Error al crear la categoria",
-    //     showConfirmButton: false,
-    //     timer: 1500,
-    //   });
-    // }
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Categoria actualizada",
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(() => {
+        navigate("/categories");
+      });
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message || error.message || "Error desconocido";
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
 
   return (
@@ -135,13 +142,19 @@ function FormEditCategory({ categoryId }: Props) {
               onChange={handleChange}
               checked={formData.is_active}
             />
+            <div className={`py-2 ${showAlert ? "d-block" : "d-none"}`}>
+              <Alert
+                type="warning"
+                menssage="Al deshabilitar una categoria ya no pedra ser seleccionada al agregar una operación"
+              />
+            </div>
           </div>
           <div className="d-flex justify-content-start">
             <Link className="btn btn-secondary btn-lg px-5" to="/categories">
               <i className="fas fa-arrow-left px-1"></i> Volver
             </Link>
             <button className="btn btn-primary btn-lg px-5 ms-3" type="submit">
-              <i className="fas fa-plus px-1"></i> Agregar
+              <i className="fas fa-save px-1"></i> Guardar
             </button>
           </div>
         </div>
