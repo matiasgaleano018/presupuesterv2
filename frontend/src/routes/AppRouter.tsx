@@ -9,6 +9,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import CategoriesPage from "../modules/Categories/pages/CategoriesPage";
 import AddCategory from "../modules/Categories/components/AddCategory";
 import UserPage from "../modules/users/pages/UserPage";
+import ChangePass from "../modules/users/pages/ChangePass";
 
 function AppRouter() {
   return (
@@ -29,6 +30,7 @@ function AppRouter() {
         <Route path="/categories/new" element={<AddCategory />}></Route>
 
         <Route path="/profile" element={<UserPage />}></Route>
+        <Route path="/profile/change-password" element={<ChangePass />}></Route>
       </Route>
 
       <Route path="*" element={<h1>404 - Página no encontrada</h1>} />

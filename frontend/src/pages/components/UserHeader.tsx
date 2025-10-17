@@ -99,7 +99,7 @@ function UserHeader() {
                 <Link to="/profile" className="dropdown-item">
                   Mi perfil
                 </Link>
-                <Link to="/" className="dropdown-item">
+                <Link to="/profile/change-password" className="dropdown-item">
                   Cambiar contraseña
                 </Link>
                 <div className="dropdown-divider"></div>

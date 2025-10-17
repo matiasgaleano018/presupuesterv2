@@ -64,6 +64,9 @@ export class UsersService {
       throw new BadRequestException('Email ya registrado');
     }
     
+    if(!this.isValidPassword(user.password)) {
+      throw new BadRequestException('Contraseña inválida');
+    }
     const hashedPassword = await this.hashPassword(user.password);
 
     const userToSave = {
@@ -125,6 +128,25 @@ export class UsersService {
     if(!userInfo) {
       throw new BadRequestException('Usuario no encontrado');
     }
+    if(!this.isValidPassword(newPassword)) {
+      throw new BadRequestException('Contraseña inválida');
+    }
     return this._changePassword(userInfo.id, oldPassword, newPassword);
+  }
+
+  private isValidPassword(password: string): boolean {
+    const regex = /^(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).+$/;
+
+    if(password === ""){
+      return false;
+    }
+    if(password.length < 6) {
+      return false;
+    }
+    if(!regex.test(password)) {
+      return false;
+    }
+
+    return true;
   }
 }
