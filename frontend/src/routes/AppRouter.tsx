@@ -10,6 +10,7 @@ import CategoriesPage from "../modules/Categories/pages/CategoriesPage";
 import AddCategory from "../modules/Categories/components/AddCategory";
 import UserPage from "../modules/users/pages/UserPage";
 import ChangePass from "../modules/users/pages/ChangePass";
+import EditCategory from "../modules/Categories/components/EditCategory";
 
 function AppRouter() {
   return (
@@ -28,6 +29,7 @@ function AppRouter() {
 
         <Route path="/categories" element={<CategoriesPage />}></Route>
         <Route path="/categories/new" element={<AddCategory />}></Route>
+        <Route path="/categories/:id/edit" element={<EditCategory />}></Route>
 
         <Route path="/profile" element={<UserPage />}></Route>
         <Route path="/profile/change-password" element={<ChangePass />}></Route>

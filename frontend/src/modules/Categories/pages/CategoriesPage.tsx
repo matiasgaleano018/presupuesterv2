@@ -31,6 +31,7 @@ type category = {
   slug: string;
   type_label: string;
   type_slug: string;
+  status: number;
   created_at: string;
   updated_at: string;
 };
@@ -47,6 +48,7 @@ function CategoriesPage() {
               slug: category.slug,
               type_label: category.type.label,
               type_slug: category.type.slug,
+              status: category.status,
               created_at: category.created_at,
               updated_at: category.updated_at,
             };
@@ -98,6 +100,12 @@ function CategoriesPage() {
                           </div>
                           <div className="col-12">
                             <div className="text-muted">
+                              Estado:{" "}
+                              {category.status === 100 ? "Activo" : "Inactivo"}
+                            </div>
+                          </div>
+                          <div className="col-12">
+                            <div className="text-muted">
                               Creado el:{" "}
                               {formatAsuncionDate(category.created_at)}
                             </div>
@@ -107,6 +115,14 @@ function CategoriesPage() {
                               Actualizado el:{" "}
                               {formatAsuncionDate(category.updated_at)}
                             </div>
+                          </div>
+                          <div className="col-12 text-end">
+                            <Link
+                              to={`/categories/${category.id}/edit`}
+                              className="btn btn-outline-primary btn-sm"
+                            >
+                              <i className="fas fa-edit px-1"></i> Editar
+                            </Link>
                           </div>
                         </div>
                       </SimpleCard>

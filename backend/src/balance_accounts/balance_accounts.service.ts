@@ -3,6 +3,7 @@ import { BalanceAccount } from './entities/balance_account.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, EntityManager } from 'typeorm';
 import { BalanceAccountTypes } from './entities/balance_account_type.entity';
+import { UpdateBalanceAccountDto } from './dto/update-balance_account.dto';
 
 @Injectable()
 export class BalanceAccountsService {
@@ -39,8 +40,13 @@ export class BalanceAccountsService {
     });
   }
 
-  update(id: number, balanceAccount: Partial<BalanceAccount>) {
-    return this.balanceAccountsRepository.update(id, balanceAccount);
+  update(id: number, balanceAccount: UpdateBalanceAccountDto) {
+    const account = {
+      label: balanceAccount.label,
+      number: balanceAccount.number,
+      status: balanceAccount.isActive ? 100 : 1
+    }
+    return this.balanceAccountsRepository.update(id, account);
   }
 
   async afectAccountAmount(
