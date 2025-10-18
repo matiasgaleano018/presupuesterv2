@@ -79,6 +79,16 @@ function AccountsPage() {
                         </div>
                         <div className="col-12">
                           <div className="text-muted">
+                            Estado:{" "}
+                            {account.status === 100 ? (
+                              <span className="text-success">Activa</span>
+                            ) : (
+                              <span className="text-danger">Inactiva</span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-12">
+                          <div className="text-muted">
                             Creado el: {formatAsuncionDate(account.created_at)}
                           </div>
                         </div>
@@ -87,6 +97,14 @@ function AccountsPage() {
                             Actualizado el:{" "}
                             {formatAsuncionDate(account.updated_at)}
                           </div>
+                        </div>
+                        <div className="col-12 text-end">
+                          <Link
+                            to={`/accounts/${account.id}/edit`}
+                            className="btn btn-outline-primary btn-sm"
+                          >
+                            <i className="fas fa-edit px-1"></i> Editar
+                          </Link>
                         </div>
                       </div>
                     </AccountCard>

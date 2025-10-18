@@ -40,11 +40,17 @@ export class BalanceAccountsService {
     });
   }
 
+  async getById(userId: number, id: number) {
+    return await this.balanceAccountsRepository.findOne({
+      where: { id, user_id: userId },
+    });
+  }
+
   update(id: number, balanceAccount: UpdateBalanceAccountDto) {
     const account = {
       label: balanceAccount.label,
       number: balanceAccount.number,
-      status: balanceAccount.isActive ? 100 : 1
+      status: balanceAccount.is_active ? 100 : 1
     }
     return this.balanceAccountsRepository.update(id, account);
   }

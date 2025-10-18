@@ -26,6 +26,10 @@ function AppRouter() {
 
         <Route path="/accounts" element={<AccountsPage />}></Route>
         <Route path="/accounts/new" element={<AddAccountsPage />}></Route>
+        <Route
+          path="/accounts/:accountId/edit"
+          element={<AddAccountsPage />}
+        ></Route>
 
         <Route path="/categories" element={<CategoriesPage />}></Route>
         <Route path="/categories/new" element={<AddCategory />}></Route>

@@ -23,7 +23,7 @@ type ResponseData = {
 };
 async function useGetAccounts(typeId?: number): Promise<ResponseData[]> {
   const response = await api.get(
-    `/balance-accounts${typeId ? "/" + typeId : ""}`
+    `/balance-accounts${typeId ? "/type/" + typeId : ""}`
   );
 
   return response.data;

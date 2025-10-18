@@ -1,37 +1,35 @@
-import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import useToSlug from "../../../components/hooks/useToSlug";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import useGetCategoryById from "../hooks/useGetByCategoryById";
-import usePutCategories from "../hooks/usePutCategories";
 import Alert from "../../../components/ui/Alert";
+import useGetAccountById from "../hooks/useGetAccountById";
+import usePutAccount from "../hooks/usePutAccount";
 
-type FormData = {
-  slug: string;
+type formData = {
   label: string;
+  number: string;
   is_active: boolean;
 };
 
 type Props = {
-  categoryId: number;
+  accountId: number;
 };
 
-function FormEditCategory({ categoryId }: Props) {
-  const navigate = useNavigate();
+function FormEditAccounts({ accountId }: Props) {
   const [showAlert, setShowAlert] = useState(false);
 
-  const [formData, setFormData] = useState<FormData>({
-    slug: "",
+  const [formData, setFormData] = useState<formData>({
     label: "",
+    number: "",
     is_active: true,
   });
 
   useEffect(() => {
-    useGetCategoryById(categoryId)
+    useGetAccountById(accountId)
       .then((data) =>
         setFormData({
-          slug: data.slug,
           label: data.label,
+          number: data.number,
           is_active: data.status === 100 ? true : false,
         })
       )
@@ -59,40 +57,27 @@ function FormEditCategory({ categoryId }: Props) {
       setFormData((prevState) => ({
         ...prevState,
         [name]: value,
-        slug: useToSlug(value),
       }));
     }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     try {
-      await usePutCategories({
-        id: categoryId,
-        body: {
-          label: formData.label,
-          slug: useToSlug(formData.label),
-          is_active: formData.is_active,
-        },
-      });
-
+      await usePutAccount({ accountId, body: formData });
       Swal.fire({
         position: "top-end",
         icon: "success",
-        title: "Categoria actualizada",
+        title: "Cuenta actualizada",
         showConfirmButton: false,
         timer: 1500,
-      }).then(() => {
-        navigate("/categories");
       });
-    } catch (error: any) {
-      const message =
-        error.response?.data?.message || error.message || "Error desconocido";
+    } catch (error) {
+      console.log(error);
       Swal.fire({
         position: "top-end",
         icon: "error",
-        title: message,
+        title: "Error al crear la cuenta",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -110,7 +95,7 @@ function FormEditCategory({ categoryId }: Props) {
             <input
               type="text"
               className="form-control form-control-lg"
-              placeholder="Agregue una etiqueta"
+              placeholder="Ej: Cuenta de ahorro - Banco X"
               name="label"
               required
               onChange={handleChange}
@@ -119,15 +104,16 @@ function FormEditCategory({ categoryId }: Props) {
           </div>
           <div className="form-outline form-white mb-4">
             <label htmlFor="label" className="form-label">
-              Slug
+              Número de cuenta
             </label>
             <input
               type="text"
               className="form-control form-control-lg"
-              name="label"
+              placeholder="Agregue el número de cuenta"
+              name="number"
               required
-              readOnly
-              value={formData.slug}
+              onChange={handleChange}
+              value={formData.number}
             />
           </div>
           <div className="form-outline form-white mb-4">
@@ -144,12 +130,12 @@ function FormEditCategory({ categoryId }: Props) {
             <div className={`py-2 ${showAlert ? "d-block" : "d-none"}`}>
               <Alert
                 type="warning"
-                menssage="Al deshabilitar una categoria ya no pedra ser seleccionada al agregar una operación"
+                menssage="Al deshabilitar una cuenta ya no pedra ser seleccionada al agregar una operación"
               />
             </div>
           </div>
           <div className="d-flex justify-content-start">
-            <Link className="btn btn-secondary btn-lg px-5" to="/categories">
+            <Link className="btn btn-secondary btn-lg px-5" to="/accounts">
               <i className="fas fa-arrow-left px-1"></i> Volver
             </Link>
             <button className="btn btn-primary btn-lg px-5 ms-3" type="submit">
@@ -162,4 +148,4 @@ function FormEditCategory({ categoryId }: Props) {
   );
 }
 
-export default FormEditCategory;
+export default FormEditAccounts;
