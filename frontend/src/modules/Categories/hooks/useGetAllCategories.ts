@@ -1,25 +1,7 @@
 import api from "../../../api/AxiosClient";
+import type { Category } from "../types/categories.type";
 
-type categoryType = {
-    id: number;
-    label: string;
-    slug: string;
-    status: number;
-    created_at: string;
-    updated_at: string;
-}
-type responseData = {
-  id: number;
-  label: string;
-  slug: string;
-  status: number;
-  type_id: number;
-  created_at: string;
-  updated_at: string;
-  user_id: number;
-  type: categoryType
-};
-async function useGetAllCategories(): Promise<responseData[]> {
+async function useGetAllCategories(): Promise<Category[]> {
     try{
         const response = await api.get("/categories");
         return response.data;

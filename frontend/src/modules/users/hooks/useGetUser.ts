@@ -1,12 +1,7 @@
 import api from "../../../api/AxiosClient";
+import type { User } from "../types/user.type";
 
-type ResponseData = {
-  id: number;
-  email: string;
-  first_name: string;
-  last_name: string;
-};
-async function useGetUser(): Promise<ResponseData> {
+async function useGetUser(): Promise<User> {
     const responde = await api.get('/users');
 
     return responde.data;

@@ -1,18 +1,9 @@
 import api from "../../../api/AxiosClient";
+import type { Category } from "../types/categories.type";
 
-type responseData = {
-  id: number;
-  label: string;
-  slug: string;
-  status: number;
-  type_id: number;
-  created_at: string;
-  updated_at: string;
-  user_id: number;
-};
 async function useGetCategories(
   type: "income" | "expense" | "transfer" | "ajust"
-): Promise<responseData[]> {
+): Promise<Category[]> {
   const typeMap = {
     income: 10,
     expense: 20,

@@ -1,27 +1,7 @@
 import api from "../../../api/AxiosClient";
+import type { BalanceAccount } from "../types/balance-account.type";
 
-type AccType = {
-  id: number;
-  label: string;
-  slug: string;
-  status: number;
-  created_at: Date;
-  updated_at: Date;
-};
-type ResponseData = {
-  id: number;
-  type_id: number;
-  label: string;
-  user_id: number;
-  amount: number;
-  number: string;
-  status: number;
-  description: string;
-  type: AccType;
-  created_at: Date;
-  updated_at: Date;
-};
-async function useGetAccounts(typeId?: number): Promise<ResponseData[]> {
+async function useGetAccounts(typeId?: number): Promise<BalanceAccount[]> {
   const response = await api.get(
     `/balance-accounts${typeId ? "/type/" + typeId : ""}`
   );
