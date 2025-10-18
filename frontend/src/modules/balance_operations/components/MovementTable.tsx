@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useGetMovements from "../hooks/useGetMovements";
 import { formatAsuncionDate } from "../../../utils/dateUtils";
 import type { BalanceOperation } from "../types/balance-operation.type";
+import AmountLabel from "../../../components/ui/AmountLabel";
 
 function MovementTable() {
   const [movements, setMovements] = useState<BalanceOperation[]>([]);
@@ -39,16 +40,24 @@ function MovementTable() {
                   <tr key={movement.id}>
                     <td>
                       {movement.type_id === 10 ? (
-                        <i className="fas fa-plus fa-3x text-success"></i>
+                        <span className="text-success text-uppercase fw-bold">
+                          {movement.type.label}
+                        </span>
                       ) : movement.type_id === 20 ? (
-                        <i className="fas fa-minus fa-3x text-danger"></i>
+                        <span className="text-danger text-uppercase fw-bold">
+                          {movement.type.label}
+                        </span>
                       ) : (
-                        <i className="fas fa-exchange-alt fa-3x text-warning"></i>
+                        <span className="text-warning text-uppercase fw-bold">
+                          {movement.type.label}
+                        </span>
                       )}
                     </td>
                     <td>{movement.id}</td>
                     <td>{movement.category.label}</td>
-                    <td>{movement.amount}</td>
+                    <td className="text-end">
+                      {<AmountLabel value={movement.amount} />}
+                    </td>
                     <td>{movement.details[0].account.label}</td>
                     <td>{formatAsuncionDate(movement.created_at)}</td>
                   </tr>

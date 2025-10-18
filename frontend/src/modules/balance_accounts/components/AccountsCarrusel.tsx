@@ -28,7 +28,7 @@ function AccountsCarrusel() {
   const [accounts, setAccounts] = useState<ResponseData[]>([]);
 
   useEffect(() => {
-    useGetAccounts()
+    useGetAccounts({ params: { status_active: true } })
       .then((data) => setAccounts(data))
       .catch((error) => {
         Swal.fire({
