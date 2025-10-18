@@ -1,6 +1,6 @@
 import { NumericFormat } from "react-number-format";
 import CategorySelect from "../../Categories/components/CategorySelect";
-import BalanceAccountSelect from "../../balance_accounts/BalanceAccountSelect";
+import BalanceAccountSelect from "../../balance_accounts/components/BalanceAccountSelect";
 import { Link } from "react-router-dom";
 import usePostMovements from "../hooks/usePostMovements";
 import { useState } from "react";

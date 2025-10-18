@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import SelectSimple from "../../components/ui/SelectSimple";
-import useGetAccounts from "./hooks/useGetAccounts";
+import SelectSimple from "../../../components/ui/SelectSimple";
+import useGetAccounts from "../hooks/useGetAccounts";
 
 type BalanceAccountOptions = {
   value: number;
@@ -19,7 +19,7 @@ type Props = {
 function BalanceAccountSelect({ name, selectOnChange }: Props) {
   const [accounts, setAccounts] = useState<BalanceAccountOptions[]>([]);
   useEffect(() => {
-    useGetAccounts()
+    useGetAccounts({ params: { status_active: true } })
       .then((data) =>
         setAccounts(
           data.map((account) => {

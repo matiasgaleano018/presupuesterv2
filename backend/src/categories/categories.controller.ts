@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { GetUser } from '../decorators/get-user.decorator';
 import { Auth } from '../auth/entities/auth.entity';
+import { FilterCategoryDto } from './dto/filter-category.dto';
 
 @Controller('categories')
 export class CategoriesController {
@@ -16,9 +17,9 @@ export class CategoriesController {
     }
 
     @Get('typeId/:typeId')
-    async getCategoriesByTypeId(@GetUser() req: Auth, @Param('typeId', ParseIntPipe) typeId: number) {
+    async getCategoriesByTypeId(@GetUser() req: Auth, @Param('typeId', ParseIntPipe) typeId: number, @Query() categoryFilter: FilterCategoryDto) {
         const userId = req.user_id;
-        return await this.categoriesService.getCategoriesByTypeId(userId, typeId);
+        return await this.categoriesService.getCategoriesByTypeId(userId, typeId, categoryFilter);
     }
 
     @Get('id/:id')
@@ -35,7 +36,6 @@ export class CategoriesController {
 
     @Put('/:id')
     async updateCategory(@Param('id', ParseIntPipe) id: number, @Body() category: UpdateCategoryDto) {
-        console.log(category);
         return await this.categoriesService.updateCategory(id, category);
     }
 

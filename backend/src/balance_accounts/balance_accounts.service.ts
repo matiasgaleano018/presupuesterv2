@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, EntityManager } from 'typeorm';
 import { BalanceAccountTypes } from './entities/balance_account_type.entity';
 import { UpdateBalanceAccountDto } from './dto/update-balance_account.dto';
+import { FilterBalanceAccountDto } from './dto/filter-balance_account.dto';
 
 @Injectable()
 export class BalanceAccountsService {
@@ -23,9 +24,22 @@ export class BalanceAccountsService {
     return this.balanceAccountsRepository.save(account);
   }
 
-  async getAll(userId: number) {
+  async getAll(userId: number, accountFilter: FilterBalanceAccountDto) {
+    let filters = {};
+
+    if(accountFilter.status_active) {
+      filters = {
+        ...filters,
+        status: accountFilter.status_active ? 100 : 1
+      }
+    }
+
+    filters = {
+      ...filters,
+      user_id: userId
+    }
     return await this.balanceAccountsRepository.find({
-      where: { user_id: userId },
+      where: filters,
       relations: ['type'],
     });
   }
@@ -34,9 +48,23 @@ export class BalanceAccountsService {
     return await this.balanceAccountsTypesRepository.find();
   }
 
-  async getByTypeId(userId: number, typeId: number) {
+  async getByTypeId(userId: number, typeId: number, accountFilter: FilterBalanceAccountDto) {
+    let filters = {};
+
+    if(accountFilter.status_active) {
+      filters = {
+        ...filters,
+        status: accountFilter.status_active ? 100 : 1
+      }
+    }
+
+    filters = {
+      ...filters,
+      user_id: userId,
+      type_id: typeId
+    }
     return await this.balanceAccountsRepository.find({
-      where: { user_id: userId, type_id: typeId },
+      where: filters,
     });
   }
 

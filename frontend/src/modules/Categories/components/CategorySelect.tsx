@@ -14,7 +14,7 @@ type Props = {
 function CategorySelect({ type, selectOnChange }: Props) {
   const [categories, setCategories] = useState<categoryOptions[]>([]);
   useEffect(() => {
-    useGetCategories(type)
+    useGetCategories({ type, params: { status_active: true } })
       .then((res) => {
         setCategories(
           res.map((category) => {
@@ -25,7 +25,7 @@ function CategorySelect({ type, selectOnChange }: Props) {
       .catch((error) => {
         console.log(error);
       });
-  }, [type]);
+  }, []);
   return (
     <>
       <SelectSimple

@@ -1,58 +1,10 @@
 import { useEffect, useState } from "react";
 import useGetMovements from "../hooks/useGetMovements";
 import { formatAsuncionDate } from "../../../utils/dateUtils";
-
-type categoryData = {
-  id: number;
-  slug: string;
-  label: string;
-  type_id: number;
-  user_id: number;
-  status: number;
-  created_at: string;
-  updated_at: string;
-};
-
-type AccountData = {
-  id: number;
-  type_id: number;
-  label: string;
-  user_id: number;
-  amount: number;
-  number: string;
-  status: number;
-  description: string;
-  created_at: string;
-  updated_at: string;
-};
-
-type detailData = {
-  id: number;
-  account_id: number;
-  account: AccountData;
-  amount: number;
-  next_acc_amount: number;
-  prev_acc_amount: number;
-  operation_id: number;
-  status: number;
-  created_at: string;
-  updated_at: string;
-};
-type movementsData = {
-  id: number;
-  type_id: number;
-  user_id: number;
-  category_id: number;
-  amount: number;
-  category: categoryData;
-  details: detailData[];
-  status: number;
-  created_at: string;
-  updated_at: string;
-};
+import type { BalanceOperation } from "../types/balance-operation.type";
 
 function MovementTable() {
-  const [movements, setMovements] = useState<movementsData[]>([]);
+  const [movements, setMovements] = useState<BalanceOperation[]>([]);
 
   useEffect(() => {
     useGetMovements({ params: { limit: 5 } })

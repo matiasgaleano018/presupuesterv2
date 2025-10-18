@@ -1,24 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Put, Query } from '@nestjs/common';
 import { BalanceAccountsService } from './balance_accounts.service';
 import { CreateBalanceAccountDto } from './dto/create-balance_account.dto';
 import { UpdateBalanceAccountDto } from './dto/update-balance_account.dto';
 import { GetUser } from '../decorators/get-user.decorator';
 import { Auth } from '../auth/entities/auth.entity';
+import { FilterBalanceAccountDto } from './dto/filter-balance_account.dto';
+import { QueryExpressionMap } from 'typeorm/query-builder/QueryExpressionMap';
 
 @Controller('balance-accounts')
 export class BalanceAccountsController {
   constructor(private readonly balanceAccountsService: BalanceAccountsService) {}
 
   @Get('/')
-  getAll(@GetUser() req: Auth) {
+  getAll(@GetUser() req: Auth, @Query() accountFilter: FilterBalanceAccountDto) {
     const userId = req.user_id;
-    return this.balanceAccountsService.getAll(userId);
+    return this.balanceAccountsService.getAll(userId, accountFilter);
   }
 
   @Get('type/:typeId')
-  getByTypeId(@GetUser() req: Auth, @Param('typeId', ParseIntPipe) typeId: number) {
+  getByTypeId(@GetUser() req: Auth, @Param('typeId', ParseIntPipe) typeId: number, @Query() accountFilter: FilterBalanceAccountDto) {
     const userId = req.user_id;
-    return this.balanceAccountsService.getByTypeId(userId, typeId);
+    return this.balanceAccountsService.getByTypeId(userId, typeId, accountFilter);
   }
 
   @Get('id/:id')

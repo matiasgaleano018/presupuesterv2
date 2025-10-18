@@ -4,6 +4,8 @@ import { Category } from './entities/category.entity';
 import { Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { FilterCategoryDto } from './dto/filter-category.dto';
+import { filter } from 'rxjs';
 
 @Injectable()
 export class CategoriesService {
@@ -28,12 +30,21 @@ export class CategoriesService {
             relations: ['type']
         });
     }
-    async getCategoriesByTypeId(userId: number, typeId: number) {
-        return await this.categoriesRepository.find({
-            where: {
-                type_id: typeId,
-                user_id: userId
+    async getCategoriesByTypeId(userId: number, typeId: number, categoryFilter: FilterCategoryDto) {
+        let filters = {};
+        if(categoryFilter.status_active) {
+            filters = {
+                ...filters,
+                status: categoryFilter.status_active ? 100 : 1
             }
+        }
+        filters = {
+            ...filters,
+            user_id: userId,
+            type_id: typeId
+        }
+        return await this.categoriesRepository.find({
+            where: filters
         });
     }
 
