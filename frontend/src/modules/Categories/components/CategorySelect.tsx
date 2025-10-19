@@ -8,7 +8,7 @@ type categoryOptions = {
 };
 
 type Props = {
-  type: "income" | "expense" | "transfer" | "ajust";
+  type: "income" | "expense" | "transfer" | "ajust" | "all";
   selectOnChange: (value: categoryOptions | null) => void;
 };
 function CategorySelect({ type, selectOnChange }: Props) {

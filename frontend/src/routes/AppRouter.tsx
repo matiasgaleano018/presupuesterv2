@@ -11,6 +11,7 @@ import AddCategory from "../modules/Categories/components/AddCategory";
 import UserPage from "../modules/users/pages/UserPage";
 import ChangePass from "../modules/users/pages/ChangePass";
 import EditCategory from "../modules/Categories/components/EditCategory";
+import MovementsPage from "../modules/balance_operations/pages/MovementsPage";
 
 function AppRouter() {
   return (
@@ -22,7 +23,8 @@ function AppRouter() {
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<Home />} />
 
-        <Route path="/operations/:type" element={<AddMovement />}></Route>
+        <Route path="/movements" element={<MovementsPage />}></Route>
+        <Route path="/movements/:type" element={<AddMovement />}></Route>
 
         <Route path="/accounts" element={<AccountsPage />}></Route>
         <Route path="/accounts/new" element={<AddAccountsPage />}></Route>

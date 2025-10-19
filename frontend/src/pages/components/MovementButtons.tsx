@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 function MovementButtons() {
   const navigate = useNavigate();
   const handleClick = (type: "income" | "expense" | "transfer") => {
-    navigate(`/operations/${type}`);
+    navigate(`/movements/${type}`);
   };
 
   return (

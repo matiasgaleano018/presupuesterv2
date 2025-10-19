@@ -25,7 +25,7 @@ function Navbar() {
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/login">
+                  <NavLink className="nav-link" to="/movements">
                     <span className="nav-link-icon d-md-none d-lg-inline-block">
                       <i className="fas fa-cash-register"></i>
                     </span>

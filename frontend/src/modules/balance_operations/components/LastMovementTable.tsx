@@ -4,7 +4,7 @@ import { formatAsuncionDate } from "../../../utils/dateUtils";
 import type { BalanceOperation } from "../types/balance-operation.type";
 import AmountLabel from "../../../components/ui/AmountLabel";
 
-function MovementTable() {
+function LastMovementTable() {
   const [movements, setMovements] = useState<BalanceOperation[]>([]);
 
   useEffect(() => {
@@ -71,4 +71,4 @@ function MovementTable() {
   );
 }
 
-export default MovementTable;
+export default LastMovementTable;
