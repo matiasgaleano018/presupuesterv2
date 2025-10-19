@@ -25,6 +25,13 @@ function DetailMovementTable({ options }: Props) {
                 </tr>
               </thead>
               <tbody>
+                {options.length === 0 && (
+                  <tr>
+                    <td colSpan={8} className="text-center">
+                      No hay movimientos
+                    </td>
+                  </tr>
+                )}
                 {options.map((option) => (
                   <tr key={option.id}>
                     <td>

@@ -16,9 +16,9 @@ export class OperationsController {
     }
 
     @Get('details')
-    async getDetailsMovements(@GetUser() req: Auth) {
+    async getDetailsMovements(@GetUser() req: Auth, @Query () opFilter: FilterOperationsDto) {
         const userId = req.user_id;
-        return await this.operationsService.getDetailsMovements(userId);
+        return await this.operationsService.getDetailsMovements(userId, opFilter);
     }
 
     @Post()

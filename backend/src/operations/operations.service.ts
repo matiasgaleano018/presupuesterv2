@@ -74,14 +74,29 @@ export class OperationsService {
         .getMany();
     }
 
-    async getDetailsMovements(userId: number) {
-        return this.balanceDetailsRepository.createQueryBuilder('detail')
+    async getDetailsMovements(userId: number, filterOp: FilterOperationsDto) {
+        const details = this.balanceDetailsRepository.createQueryBuilder('detail')
         .innerJoinAndSelect('detail.operation', 'operation')
         .innerJoinAndSelect('detail.account', 'account')
         .innerJoinAndSelect('operation.type', 'type')
         .innerJoinAndSelect('operation.category', 'category')
         .where("operation.user_id = :userId", { userId })
-        .getMany();
+        .orderBy('operation.created_at', 'DESC');
+
+        if(filterOp?.category_id !== undefined && filterOp?.category_id !== null) {
+            details.andWhere("operation.category_id = :categoryId", { categoryId: filterOp.category_id });
+        }
+        if(filterOp?.type_slug !== undefined && filterOp?.type_slug !== null) {
+            details.andWhere("type.slug = :typeSlug", { typeSlug: filterOp.type_slug });
+        }
+        if(filterOp?.start_date !== undefined && filterOp?.start_date !== null) {
+            details.andWhere("detail.created_at >= :startDate", { startDate: filterOp.start_date.toISOString() });
+        }
+        if(filterOp?.end_date !== undefined && filterOp?.end_date !== null) {
+            details.andWhere("detail.created_at < :endDate", { endDate: filterOp.end_date.toISOString() });
+        }
+
+        return details.getMany();
     }
 
     async createMovement(userId: number, operation: CreateOperationDto): Promise<BalanceOperations> {

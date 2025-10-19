@@ -14,16 +14,27 @@ type FormData = {
   category_id: string;
 };
 
+type Filter = {
+  start_date?: string;
+  end_date?: string;
+  type_slug?: string;
+  category_id?: string;
+};
+
 type OptionType = {
   value: string | number;
   label: string;
 };
 
 function MovementsPage() {
+  const [filter, setFilter] = useState<Filter>({
+    start_date: dayjs().startOf("day").subtract(7, "day").toISOString(),
+    end_date: dayjs().startOf("day").add(1, "day").toISOString(),
+  });
   const [loading, setLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
-    start_date: new Date().toISOString().split("T")[0],
-    end_date: new Date().toISOString().split("T")[0],
+    start_date: dayjs().startOf("day").subtract(7, "day").format("YYYY-MM-DD"),
+    end_date: dayjs().startOf("day").format("YYYY-MM-DD"),
     type_slug: "",
     category_id: "",
   });
@@ -32,18 +43,24 @@ function MovementsPage() {
 
   useEffect(() => {
     setLoading(true);
-    useGetDetailsMovements({ params: {} })
+    useGetDetailsMovements({ params: filter })
       .then((data) => setMovements(data))
       .catch((error) => {
         console.log(error);
       })
       .finally(() => setLoading(false));
-  }, [formData]);
+  }, [filter]);
   const handleSelectChange = (
     field: keyof FormData,
     value: OptionType | null
   ) => {
-    if (!value) return;
+    if (!value) {
+      setFormData((prev) => ({
+        ...prev,
+        [field]: "",
+      }));
+      return;
+    }
 
     setFormData((prev) => ({
       ...prev,
@@ -71,7 +88,7 @@ function MovementsPage() {
       return;
     }
     const startDate = dayjs(formData.start_date).startOf("day");
-    const endDate = dayjs(formData.end_date).startOf("day");
+    const endDate = dayjs(formData.end_date).startOf("day").add(1, "day");
     if (startDate.isAfter(endDate)) {
       Swal.fire({
         position: "top-end",
@@ -106,6 +123,8 @@ function MovementsPage() {
         end_date: endDate.format("YYYY-MM-DD HH:mm:ss"),
       };
     }
+    setFilter(filterColumns);
+
     console.log(filterColumns);
   };
   return (
