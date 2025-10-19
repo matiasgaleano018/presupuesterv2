@@ -8,7 +8,7 @@ INSERT INTO balance_account_types (id, slug, label, status, created_at, updated_
 (30, 'checking_account', 'Cuenta corriente', 100, utc_timestamp(), utc_timestamp()),
 (40, 'credit_card', 'Tarjeta de crédito', 100, utc_timestamp(), utc_timestamp()),
 (50, 'loan', 'Préstamo', 100, utc_timestamp(), utc_timestamp()),
-(60, 'credit_card', 'Tarjeta de débito', 100, utc_timestamp(), utc_timestamp()),
+(60, 'debit_card', 'Tarjeta de débito', 100, utc_timestamp(), utc_timestamp()),
 (70, 'other', 'Otro', 100, utc_timestamp(), utc_timestamp());
 
 INSERT INTO operations_types (id, slug, label, status, created_at, updated_at) VALUES 
