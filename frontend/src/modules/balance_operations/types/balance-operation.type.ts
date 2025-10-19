@@ -35,3 +35,17 @@ export type BalanceOperation = {
   created_at: string;
   updated_at: string;
 };
+
+export type DetailsMovementData = {
+  id: number;
+  account_id: number;
+  account: BalanceAccount;
+  amount: number;
+  next_acc_amount: number;
+  prev_acc_amount: number;
+  operation_id: number;
+  operation: BalanceOperation;
+  status: number;
+  created_at: string;
+  updated_at: string;
+};

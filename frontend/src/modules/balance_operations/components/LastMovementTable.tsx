@@ -31,7 +31,7 @@ function LastMovementTable() {
                   <th>Nro</th>
                   <th>Categoria</th>
                   <th>Monto</th>
-                  <th>Cuenta</th>
+                  {/* <th>Cuenta</th> */}
                   <th>Creado el</th>
                 </tr>
               </thead>
@@ -58,7 +58,7 @@ function LastMovementTable() {
                     <td className="text-end">
                       {<AmountLabel value={movement.amount} />}
                     </td>
-                    <td>{movement.details[0].account.label}</td>
+                    {/* <td>{movement.details[0].account.label}</td> */}
                     <td>{formatAsuncionDate(movement.created_at)}</td>
                   </tr>
                 ))}

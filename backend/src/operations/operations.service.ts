@@ -19,6 +19,9 @@ export class OperationsService {
         @InjectRepository(BalanceOperations)
         private balanceOperationsRepository: Repository<BalanceOperations>,
 
+        @InjectRepository(BalanceDetails)
+        private balanceDetailsRepository: Repository<BalanceDetails>,
+
         private readonly balanceAccountsService: BalanceAccountsService,
 
         private readonly categoriesService: CategoriesService,
@@ -30,6 +33,7 @@ export class OperationsService {
         private readonly transferOperationService: TransferOperationService,
 
         private readonly ajustOperationService: AjustOperationService
+
 
     ) {}
 
@@ -67,6 +71,16 @@ export class OperationsService {
         .leftJoinAndSelect('detail.account', 'account')
         .leftJoinAndSelect('operation.type', 'type')
         .leftJoinAndSelect('operation.category', 'category')
+        .getMany();
+    }
+
+    async getDetailsMovements(userId: number) {
+        return this.balanceDetailsRepository.createQueryBuilder('detail')
+        .innerJoinAndSelect('detail.operation', 'operation')
+        .innerJoinAndSelect('detail.account', 'account')
+        .innerJoinAndSelect('operation.type', 'type')
+        .innerJoinAndSelect('operation.category', 'category')
+        .where("operation.user_id = :userId", { userId })
         .getMany();
     }
 

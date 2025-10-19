@@ -15,6 +15,12 @@ export class OperationsController {
         return await this.operationsService.getMovements(userId, opFilter);
     }
 
+    @Get('details')
+    async getDetailsMovements(@GetUser() req: Auth) {
+        const userId = req.user_id;
+        return await this.operationsService.getDetailsMovements(userId);
+    }
+
     @Post()
     async createOperation(@GetUser() req: Auth, @Body() operation: CreateOperationDto) {
         //return await this.operationsService.createOperation();
