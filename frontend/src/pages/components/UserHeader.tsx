@@ -39,7 +39,7 @@ function UserHeader() {
       if (result.isConfirmed) {
         try {
           await useLogout();
-          navigate("/login");
+          navigate("/");
         } catch (error) {
           console.log(error);
         }
