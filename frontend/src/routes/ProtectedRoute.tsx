@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import Swal from "sweetalert2";
 
 function ProtectedRoute() {
@@ -14,8 +14,8 @@ function ProtectedRoute() {
       confirmButtonText: "Ir al login",
     }).then((res) => {
       if (res.isConfirmed) {
-        window.location.href = "/login";
-        //return <Navigate to="/login" replace />;
+        //window.location.href = "/login";
+        return <Navigate to="/" replace />;
       }
     });
   } else {
