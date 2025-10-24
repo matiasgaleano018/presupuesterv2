@@ -101,7 +101,7 @@ function RegisterForm({
       <div>
         <p className="mb-0">
           ¿Ya tienes una cuenta?{" "}
-          <Link to={"/login"} className="text-white-50 fw-bold">
+          <Link to={"/"} className="text-white-50 fw-bold">
             Inicia sesión
           </Link>
         </p>

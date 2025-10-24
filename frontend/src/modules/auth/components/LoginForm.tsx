@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useCallAuthApi from "../hooks/useCallAuthApi";
 import Swal from "sweetalert2";
 
@@ -8,6 +8,7 @@ type FormData = {
   password: string;
 };
 function LoginForm() {
+  const navigate = useNavigate();
   const [form, setForm] = useState<FormData>({
     email: "",
     password: "",
@@ -33,7 +34,7 @@ function LoginForm() {
         showConfirmButton: false,
         timer: 1500,
       }).then(() => {
-        window.location.href = "/";
+        navigate("/home");
       });
     } catch (error: any) {
       const message =

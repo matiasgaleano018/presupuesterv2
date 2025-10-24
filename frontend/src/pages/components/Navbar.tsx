@@ -9,7 +9,7 @@ function Navbar() {
             <div className="container-xl">
               <ul className="navbar-nav">
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/">
+                  <NavLink className="nav-link" to="/home">
                     <span className="nav-link-icon d-md-none d-lg-inline-block">
                       <i className="fas fa-home"></i>
                     </span>

@@ -22,7 +22,7 @@ function AddMovement() {
     type: "income" | "expense" | "transfer" | "ajust";
   }>();
   if (!type) {
-    navigate("/");
+    navigate("/home");
     return null;
   }
 
@@ -40,7 +40,7 @@ function AddMovement() {
       if (result.isConfirmed) {
         window.location.reload();
       } else {
-        navigate("/");
+        navigate("/home");
       }
     });
   };

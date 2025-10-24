@@ -113,7 +113,7 @@ function FormChangePass({ email }: Props) {
             </div>
           </div>
           <div className="d-flex justify-content-start">
-            <Link className="btn btn-secondary btn-lg px-5" to="/">
+            <Link className="btn btn-secondary btn-lg px-5" to="/home">
               <i className="fas fa-arrow-left px-1"></i> Volver
             </Link>
             <button className="btn btn-primary btn-lg px-5 ms-3" type="submit">

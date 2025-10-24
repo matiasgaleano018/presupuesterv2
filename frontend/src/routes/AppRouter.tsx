@@ -11,6 +11,7 @@ import UserPage from "../modules/users/pages/UserPage";
 import ChangePass from "../modules/users/pages/ChangePass";
 import EditCategory from "../modules/Categories/components/EditCategory";
 import MovementsPage from "../modules/balance_operations/pages/MovementsPage";
+import Home from "../pages/Home";
 
 function AppRouter() {
   return (
@@ -20,7 +21,7 @@ function AppRouter() {
       <Route path="/register" element={<RegisterPage />} />
 
       <Route element={<ProtectedRoute />}>
-        {/* <Route path="/" element={<Home />} /> */}
+        <Route path="/home" element={<Home />} />
 
         <Route path="/movements" element={<MovementsPage />}></Route>
         <Route path="/movements/:type" element={<AddMovement />}></Route>

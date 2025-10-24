@@ -101,7 +101,7 @@ function FormAccounts() {
         if (result.isConfirmed) {
           window.location.reload();
         } else {
-          navigate("/");
+          navigate("/home");
         }
       });
     } catch (error) {
