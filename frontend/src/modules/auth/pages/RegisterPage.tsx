@@ -78,7 +78,7 @@ function RegisterPage() {
         confirmButtonText: "Ir al login",
         confirmButtonColor: "#3085d6",
       }).then(() => {
-        navigate("/login");
+        navigate("/");
       });
     } catch (error: any) {
       const message =

@@ -28,11 +28,11 @@ function LoginForm() {
       await useCallAuthApi({ endPoint: "/login", body: form });
 
       Swal.fire({
-        position: "top-end",
-        icon: "success",
         title: "Inicio de sesión exitoso",
-        showConfirmButton: false,
-        timer: 1500,
+        text: "Accede a tus datos financieros",
+        icon: "success",
+        confirmButtonText: "Ir al inicio",
+        confirmButtonColor: "#3085d6",
       }).then(() => {
         navigate("/home");
       });
