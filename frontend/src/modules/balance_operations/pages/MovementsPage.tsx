@@ -145,21 +145,17 @@ function MovementsPage() {
                 formData={formData}
               />
               <div className="card">
-                {loading && (
-                  <div className="card-body">
-                    <div className="d-flex justify-content-center">
-                      <div className="spinner-border" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
                 <div
                   className="card-body p-0"
                   style={{ maxHeight: "500px", overflowY: "auto" }}
-                >
+                  >
                   <DetailMovementTable options={movements} />
                 </div>
+                {loading && (
+                    <div className="d-flex justify-content-center my-3">
+                      <span className="loader-box"></span>
+                    </div>
+                )}
               </div>
             </div>
           </div>

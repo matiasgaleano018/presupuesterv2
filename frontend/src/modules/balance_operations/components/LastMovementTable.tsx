@@ -5,14 +5,17 @@ import type { BalanceOperation } from "../types/balance-operation.type";
 import AmountLabel from "../../../components/ui/AmountLabel";
 
 function LastMovementTable() {
+  const [isLoading, setIsLoading] = useState(true);
   const [movements, setMovements] = useState<BalanceOperation[]>([]);
 
   useEffect(() => {
+    setIsLoading(true);
     useGetMovements({ params: { limit: 5 } })
       .then((data) => setMovements(data))
       .catch((error) => {
         console.log(error);
-      });
+      })
+      .finally(() => setIsLoading(false));
   }, []);
   return (
     <>
@@ -36,6 +39,13 @@ function LastMovementTable() {
                 </tr>
               </thead>
               <tbody>
+                {isLoading && (
+                    <tr>
+                    <td colSpan={6} className="text-center py-5">
+                        <span className="loader-box"></span>
+                    </td>
+                  </tr>
+                )}
                 {movements.length === 0 && (
                   <tr>
                     <td colSpan={6} className="text-center">

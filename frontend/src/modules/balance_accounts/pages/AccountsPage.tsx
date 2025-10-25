@@ -5,6 +5,7 @@ import AccountCard from "../components/AccountCard";
 import { formatAsuncionDate } from "../../../utils/dateUtils";
 import { Link } from "react-router-dom";
 import useGetAccounts from "../hooks/useGetAccounts";
+import CardLoader from "../../../components/ui/CardLoader";
 
 type AccType = {
   id: number;
@@ -28,9 +29,11 @@ type ResponseData = {
   updated_at: Date;
 };
 function AccountsPage() {
+  const [isLoading, setIsLoading] = useState(false);
   const [accounts, setAccounts] = useState<ResponseData[]>([]);
 
   useEffect(() => {
+    setIsLoading(true);
     useGetAccounts()
       .then((data) => setAccounts(data))
       .catch((error) => {
@@ -41,7 +44,8 @@ function AccountsPage() {
           showConfirmButton: false,
           timer: 1500,
         });
-      });
+      })
+      .finally(() => setIsLoading(false));
   }, []);
   return (
     <>
@@ -63,6 +67,9 @@ function AccountsPage() {
             </div>
             <div className="table-responsive mb-4">
               <div className="row w-100">
+                {isLoading && 
+                  <CardLoader />
+                }
                 {accounts.map((account) => (
                   <div className="col-md-4 col-12 mb-3" key={account.id}>
                     <AccountCard

@@ -25,9 +25,11 @@ type ResponseData = {
   updated_at: Date;
 };
 function AccountsCarrusel() {
+  const [isLoading, setIsLoading] = useState(true);
   const [accounts, setAccounts] = useState<ResponseData[]>([]);
 
   useEffect(() => {
+    setIsLoading(true);
     useGetAccounts({ params: { status_active: true } })
       .then((data) => setAccounts(data))
       .catch((error) => {
@@ -38,7 +40,8 @@ function AccountsCarrusel() {
           showConfirmButton: false,
           timer: 1500,
         });
-      });
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   return (
@@ -57,6 +60,11 @@ function AccountsCarrusel() {
               <div className="container" style={{ width: "85%" }}>
                 <div id="carouselExample" className="carousel slide">
                   <div className="carousel-inner">
+                    {isLoading && (
+                      <div className="d-flex justify-content-center my-3">
+                        <span className="loader-box"></span>
+                      </div>
+                    )}
                     {accounts.map((account) => (
                       <div className="carousel-item active" key={account.id}>
                         <AccountCard

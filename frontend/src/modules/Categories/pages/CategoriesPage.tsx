@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import useGetAllCategories from "../hooks/useGetAllCategories";
 import SimpleCard from "../../../components/ui/SimpleCard";
 import { formatAsuncionDate } from "../../../utils/dateUtils";
+import CardLoader from "../../../components/ui/CardLoader";
 
 type categoryType = {
   id: number;
@@ -36,8 +37,10 @@ type category = {
   updated_at: string;
 };
 function CategoriesPage() {
+  const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState<category[]>();
   useEffect(() => {
+    setIsLoading(true);
     useGetAllCategories()
       .then((data) =>
         setCategories(
@@ -57,6 +60,9 @@ function CategoriesPage() {
       )
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
   return (
@@ -79,6 +85,9 @@ function CategoriesPage() {
             </div>
             <div className="table-responsive mb-4">
               <div className="row w-100">
+                {isLoading && 
+                  <CardLoader />
+                }
                 {categories?.map((category) => {
                   let textColor =
                     category.type_slug === "expense"
