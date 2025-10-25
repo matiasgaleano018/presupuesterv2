@@ -1,7 +1,8 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 function ProtectedRoute() {
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
   if (!token) {
@@ -14,8 +15,7 @@ function ProtectedRoute() {
       confirmButtonText: "Ir al login",
     }).then((res) => {
       if (res.isConfirmed) {
-        //window.location.href = "/login";
-        return <Navigate to="/" replace />;
+        navigate("/");
       }
     });
   } else {

@@ -24,6 +24,7 @@ type formData = {
 };
 
 function FormMovement({ type, onSuccess }: Props) {
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<formData>({
     amount: 0,
     category_id: 0,
@@ -74,6 +75,7 @@ function FormMovement({ type, onSuccess }: Props) {
         timer: 2000,
       });
     }
+    setIsLoading(true);
     try {
       await usePostMovements({ body: formData });
 
@@ -81,6 +83,7 @@ function FormMovement({ type, onSuccess }: Props) {
     } catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
   };
 
   const handleSelectChange = (
@@ -177,9 +180,15 @@ function FormMovement({ type, onSuccess }: Props) {
             <Link className="btn btn-secondary btn-lg px-5" to="/home">
               <i className="fas fa-arrow-left px-1"></i> Volver
             </Link>
-            <button className="btn btn-primary btn-lg px-5 ms-3" type="submit">
-              <i className="fas fa-plus px-1"></i> Agregar
-            </button>
+            {isLoading ? (
+              <button className="btn btn-primary btn-lg px-5 ms-3 disabled">
+                <span className="loader"></span> Agregar
+              </button>
+            ): (
+              <button className="btn btn-primary btn-lg px-5 ms-3" type="submit">
+                <i className="fas fa-plus px-1"></i> Agregar
+              </button>
+            )}
           </div>
         </div>
       </form>

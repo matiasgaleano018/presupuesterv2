@@ -17,6 +17,7 @@ type OptionType = {
 };
 function FormCategory() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState<FormData>({
     type_slug: "",
@@ -45,6 +46,7 @@ function FormCategory() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    setIsLoading(true);
     try {
       await usePostCategories({
         body: {
@@ -65,7 +67,7 @@ function FormCategory() {
         cancelButtonText: "Ir al inicio",
       }).then((result) => {
         if (result.isConfirmed) {
-          window.location.reload();
+          navigate(0);
         } else {
           navigate("/home");
         }
@@ -80,6 +82,7 @@ function FormCategory() {
         timer: 1500,
       });
     }
+    setIsLoading(false);
   };
 
   return (
@@ -132,9 +135,15 @@ function FormCategory() {
             <Link className="btn btn-secondary btn-lg px-5" to="/categories">
               <i className="fas fa-arrow-left px-1"></i> Volver
             </Link>
-            <button className="btn btn-primary btn-lg px-5 ms-3" type="submit">
-              <i className="fas fa-plus px-1"></i> Agregar
-            </button>
+            {isLoading ? (
+              <button className="btn btn-primary btn-lg px-5 ms-3 disabled">
+                <span className="loader"></span> Agregar
+              </button>
+            ): (
+              <button className="btn btn-primary btn-lg px-5 ms-3" type="submit">
+                <i className="fas fa-plus px-1"></i> Agregar
+              </button>
+            )}
           </div>
         </div>
       </form>

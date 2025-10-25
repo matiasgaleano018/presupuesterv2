@@ -8,6 +8,7 @@ type FormData = {
   password: string;
 };
 function LoginForm() {
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [form, setForm] = useState<FormData>({
     email: "",
@@ -24,6 +25,7 @@ function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       await useCallAuthApi({ endPoint: "/login", body: form });
 
@@ -48,6 +50,7 @@ function LoginForm() {
         timer: 1500,
       });
     }
+    setIsLoading(false);
   };
 
   return (
@@ -78,9 +81,15 @@ function LoginForm() {
             />
           </div>
 
-          <button className="btn btn-outline-light btn-lg px-5" type="submit">
-            Ingresar
-          </button>
+          {isLoading ? (
+            <button className="btn btn-outline-light btn-lg px-5 disabled" type="submit">
+              <span className="loader"></span> Ingresar
+            </button>
+          ) : (
+            <button className="btn btn-outline-light btn-lg px-5" type="submit">
+              Ingresar
+            </button>
+          )}
         </div>
 
         <div>

@@ -38,7 +38,7 @@ function AddMovement() {
       cancelButtonText: "Ir al inicio",
     }).then((result) => {
       if (result.isConfirmed) {
-        window.location.reload();
+        navigate(0);
       } else {
         navigate("/home");
       }
